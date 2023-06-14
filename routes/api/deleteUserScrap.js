@@ -71,7 +71,7 @@ const deleteUserScrap = async (username, url, title, date, res) => {
     return { message: '데이터 삭제 완료' };
   } catch (error) {
     console.error(error);
-    return { message: '문서 삭제 실패' };
+    res.status(500).json('스크랩 삭제 오류')
   }
 };
 
@@ -85,7 +85,7 @@ router.delete('/', async (req, res) => {
     res.status(200).json(message);
   } catch (error) {
     console.error('Atlas 및 데이터 삭제 오류:', error);
-    res.status(500).json(message);
+    res.status(500).json('오류');
   }
 });
 

@@ -47,6 +47,9 @@ app.use("/api/saveUserScrap", saveUserScrapRouter);
 const keyWordByDateRouter = require("./routes/api/keyWordByDate");
 app.use("/api/keyWordByDate", keyWordByDateRouter);
 
+const deleteKeyWordRouter = require("./routes/api/deleteKeyWord");
+app.use("/api/deleteKeyWord", deleteKeyWordRouter);
+
 // (11) MongoDB 와 서버 연결
 connectDB();
 // (12) Express application 을 PORT 번호에서 실행

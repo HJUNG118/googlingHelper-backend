@@ -20,6 +20,11 @@ router.post("/", async (req, res) => {
     if (user) {
       return res.status(400).json({ errors: [{ msg: "User already exists" }] });
     }
+    // name 중복 방지
+    let existing_name = await User.findOne({ name });
+    if (existing_name) {
+      return res.status(400).json({ errors: [{ msg: "User already exists" }] });
+    }
 		// (8) 존재하지 않는 email 인 경우, 새로운 사용자 객체 생성
     user = new User({
       name,

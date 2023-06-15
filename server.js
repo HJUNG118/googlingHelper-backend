@@ -53,6 +53,9 @@ app.use("/api/deleteKeyWord", deleteKeyWordRouter);
 const giveUserName = require("./routes/api/giveUserName");
 app.use("/api/giveUserName", giveUserName);
 
+const logoutRouter = require("./routes/api/logout");
+app.use("/api/logout", logoutRouter);
+
 // (11) MongoDB 와 서버 연결
 connectDB();
 // (12) Express application 을 PORT 번호에서 실행

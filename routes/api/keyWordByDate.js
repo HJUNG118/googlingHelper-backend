@@ -1,8 +1,8 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const { MongoClient } = require("mongodb");
+const { MongoClient } = require('mongodb');
 const conn_str = process.env.mongoURI;
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 const { ObjectId } = require('mongodb');
 
 // token과 secretkey이용해서 _id, username추출
@@ -33,8 +33,8 @@ const extractUserName = async (token, secretKey) => {
 const keyWordByDate = async (username) => {
   try {
     const client = await MongoClient.connect(conn_str);
-    console.log("Atlas에 연결 완료");
-    const database = client.db("search");
+    console.log('Atlas에 연결 완료');
+    const database = client.db('search');
     const userScrapCollection = database.collection(username);
     const result = await userScrapCollection.findOne({ user: username });
     // 날짜를 기준으로 keyWord 묶기
@@ -55,9 +55,7 @@ const keyWordByDate = async (username) => {
       });
     });
 
-    const sortedByDate = Object.entries(groupedByDate).sort((a, b) =>
-      b[0].localeCompare(a[0])
-    );
+    const sortedByDate = Object.entries(groupedByDate).sort((a, b) => b[0].localeCompare(a[0]));
     // 클라이언트에게 보낼 데이터 생성
     const dataToSend = sortedByDate.map(([date, keywords]) => ({
       date,
@@ -66,10 +64,12 @@ const keyWordByDate = async (username) => {
     // 클라이언트에게 데이터 전송
     client.close();
     return dataToSend;
-  } catch (error) {}
+  } catch (error) {
+    throw error;
+  }
 };
 
-router.post("/", async (req, res) => {
+router.post('/', async (req, res) => {
   const { userToken } = req.body;
   // const authorizationHeader = req.headers.authorization;
   // console.log(authorizationHeader)
@@ -78,14 +78,17 @@ router.post("/", async (req, res) => {
   //   console.log(userToken);
   // }
   const username = await extractUserName(userToken, process.env.jwtSecret);
-  await keyWordByDate(username)
-    .then((dataToSend) => {
-      res.status(200).json(dataToSend); // dataToSend를 JSON 형식으로 응답으로 전송
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).json({ message: "에러 발생" }); // 에러 발생 시 적절한 응답 전송
-    });
+  try {
+    const dataToSend = await keyWordByDate(username);
+    if (dataToSend.length === 0) {
+      res.status(200).json({ message: '데이터가 없습니다.' });
+    } else {
+      res.status(200).json(dataToSend);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: '스크랩한 데이터가 없습니다.' });
+  }
 });
 
 module.exports = router;

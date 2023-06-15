@@ -28,7 +28,7 @@ const extractUserName = async (token, secretKey) => {
   }
 };
 
-router.get('/', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const { userToken } = req.body;
     // const authorizationHeader = req.headers.authorization;

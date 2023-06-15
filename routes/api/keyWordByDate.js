@@ -86,7 +86,7 @@ router.post('/', async (req, res) => {
     if (dataToSend === null) {
       res.status(200).json({ message: '데이터가 없습니다.' });
     } else {
-      res.status(200).json(dataToSend);
+      res.status(200).json({ dataToSend, username });
     }
   } catch (error) {
     console.error(error);

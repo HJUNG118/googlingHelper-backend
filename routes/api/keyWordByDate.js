@@ -38,6 +38,9 @@ const keyWordByDate = async (username) => {
     const userScrapCollection = database.collection(username);
     const result = await userScrapCollection.findOne({ user: username });
     // 날짜를 기준으로 keyWord 묶기
+    if (result === null) {
+      return result;
+    }
     const groupedByDate = {};
     result.keyWords.forEach((keyword) => {
       const date = keyword.date;
@@ -80,14 +83,14 @@ router.post('/', async (req, res) => {
   const username = await extractUserName(userToken, process.env.jwtSecret);
   try {
     const dataToSend = await keyWordByDate(username);
-    if (dataToSend.length === 0) {
+    if (dataToSend === null) {
       res.status(200).json({ message: '데이터가 없습니다.' });
     } else {
       res.status(200).json(dataToSend);
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: '스크랩한 데이터가 없습니다.' });
+    res.status(500).json({ message: '스크랩 데이터 전송 오류' });
   }
 });
 

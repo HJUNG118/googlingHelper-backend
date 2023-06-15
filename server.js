@@ -50,6 +50,9 @@ app.use("/api/keyWordByDate", keyWordByDateRouter);
 const deleteKeyWordRouter = require("./routes/api/deleteKeyWord");
 app.use("/api/deleteKeyWord", deleteKeyWordRouter);
 
+const giveUserName = require("./routes/api/giveUserName");
+app.use("/api/giveUserName", giveUserName);
+
 // (11) MongoDB 와 서버 연결
 connectDB();
 // (12) Express application 을 PORT 번호에서 실행

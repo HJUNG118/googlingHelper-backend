@@ -19,7 +19,7 @@ const checkEmail = async (email, res) => {
       return;
     } else {
       // 이메일에 해당하는 사용자가 존재하지 않는 경우
-      throw new Error('존재하지 않는 이메일');
+      return res.status(400).json({ errors: [{ msg: 'Invalid email' }] });
     }
   } catch (error) {
     throw error;
@@ -27,13 +27,9 @@ const checkEmail = async (email, res) => {
 };
 
 router.post('/', async (req, res) => {
-  try {
-    const { email } = req.body;
-    await checkEmail(email);
-    res.status(200);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
+  const { email } = req.body;
+  await checkEmail(email);
+  res.status(200);
 });
 
 module.exports = router;

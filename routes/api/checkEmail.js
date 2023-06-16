@@ -4,7 +4,7 @@ const { MongoClient } = require('mongodb');
 const conn_str = process.env.mongoURI;
 const { ObjectId } = require('mongodb');
 
-const checkEmail = async (email) => {
+const checkEmail = async (email, res) => {
   try {
     const client = await MongoClient.connect(conn_str);
     const database = client.db('test');
@@ -16,10 +16,10 @@ const checkEmail = async (email) => {
 
     if (existingUser) {
       // 이메일에 해당하는 사용자가 이미 존재하는 경우
-      return { message: '사용 가능한 이메일입니다.' };
+      return;
     } else {
       // 이메일에 해당하는 사용자가 존재하지 않는 경우
-      return { message: '존재하지 않는 이메일입니다.' };
+      throw new Error('존재하지 않는 이메일');
     }
   } catch (error) {
     throw error;
@@ -29,8 +29,8 @@ const checkEmail = async (email) => {
 router.post('/', async (req, res) => {
   try {
     const { email } = req.body;
-    const message = await checkEmail(email);
-    res.status(200).json(message);
+    await checkEmail(email);
+    res.status(200);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

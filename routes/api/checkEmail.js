@@ -19,7 +19,7 @@ const checkEmail = async (email, res) => {
       return;
     } else {
       // 이메일에 해당하는 사용자가 존재하지 않는 경우
-      return res.status(400).json({ errors: [{ msg: 'Invalid email' }] });
+      return false;
     }
   } catch (error) {
     throw error;

@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const { ObjectId } = require('mongodb');
 
 // token과 secretkey이용해서 _id, username추출
-const extractUserName = async (token, secretKey) => {
+const extractAllGroup = async (token, secretKey) => {
   try {
     const decoded = jwt.verify(token, secretKey);
     const decodedUser = decoded.user; // 사용자 ID 반환
@@ -15,9 +15,15 @@ const extractUserName = async (token, secretKey) => {
     const database = client.db('test');
     const usersCollection = database.collection('users');
     const user = await usersCollection.findOne({ _id: new ObjectId(userID) });
+    
     if (user) {
-      const userName = user.name;
-      return userName;
+      const groups = Object.entries(user.group).map(([groupName, groupOwner]) => {
+        return {
+          groupName: groupName,
+          groupOwner: groupOwner
+        };
+      });
+      return groups;
     } else {
       throw new Error('User not found');
     }
@@ -26,32 +32,14 @@ const extractUserName = async (token, secretKey) => {
   }
 };
 
-const usersAllGroup = async (username) => {
-  try {
-    const client = await MongoClient.connect(conn_str);
-    const database = client.db('search');
-    const memberCollection = database.collection(username);
 
-    const documents = await memberCollection.find().toArray();
-    const extractedData = documents
-      .filter((doc) => doc.groupName && doc.groupOwner) // groupName과 groupOwner가 모두 존재하는 문서만 필터링
-      .map((doc) => ({
-        [doc.groupName]: doc.groupOwner,
-      }));
-
-    client.close();
-    return extractedData;
-  } catch (error) {
-    throw error;
-  }
-};
 
 router.post('/', async (req, res) => {
   try {
     const { userToken } = req.body;
-    const username = await extractUserName(userToken, process.env.jwtSecret);
-    const dataToSend = await usersAllGroup(username);
-    res.status(200).json(dataToSend);
+    const allGroup = await extractAllGroup(userToken, process.env.jwtSecret);
+    console.log(allGroup)
+    res.status(200).json(allGroup);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

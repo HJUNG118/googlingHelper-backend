@@ -1,9 +1,9 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { MongoClient } = require('mongodb');
+const { MongoClient } = require("mongodb");
 const conn_str = process.env.mongoURI;
-const jwt = require('jsonwebtoken');
-const { ObjectId } = require('mongodb');
+const jwt = require("jsonwebtoken");
+const { ObjectId } = require("mongodb");
 
 // token과 secretkey이용해서 _id, username추출
 const extractUserName = async (token, secretKey) => {
@@ -13,8 +13,8 @@ const extractUserName = async (token, secretKey) => {
     const userID = String(decodedUser.id);
 
     const client = await MongoClient.connect(conn_str);
-    const database = client.db('test');
-    const usersCollection = database.collection('users');
+    const database = client.db("test");
+    const usersCollection = database.collection("users");
 
     const user = await usersCollection.findOne({ _id: new ObjectId(userID) });
 
@@ -22,10 +22,10 @@ const extractUserName = async (token, secretKey) => {
       const userName = user.name;
       return userName;
     } else {
-      throw new Error('User not found');
+      throw new Error("User not found");
     }
   } catch (error) {
-    throw new Error('Invalid token');
+    throw new Error("Invalid token");
   }
 };
 
@@ -33,63 +33,97 @@ const extractUserName = async (token, secretKey) => {
 const keyWordByDate = async (username) => {
   try {
     const client = await MongoClient.connect(conn_str);
-    console.log('Atlas에 연결 완료');
-    const database = client.db('search');
+    console.log("Atlas에 연결 완료");
+    const database = client.db("search");
     const userScrapCollection = database.collection(username);
-    const result = await userScrapCollection.findOne({ user: username });
-    // 날짜를 기준으로 keyWord 묶기
-    if (result === null) {
-      return result;
-    }
-    const groupedByDate = {};
-    result.keyWords.forEach((keyword) => {
-      const date = keyword.date;
-      if (!groupedByDate[date]) {
-        groupedByDate[date] = [];
-      }
-      groupedByDate[date].push(keyword);
+    const cursor = userScrapCollection.aggregate([
+      {
+        $sort: {
+          date: -1,
+          time: -1,
+        },
+      },
+      {
+        $group: {
+          _id: {
+            date: "$date",
+            keyword: "$keyWord",
+          },
+          title: {
+            $push: "$title",
+          },
+          url: {
+            $push: "$url",
+          },
+          time: {
+            $push: "$time",
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id.date",
+          keywords: {
+            $push: {
+              keyword: "$_id.keyword",
+              titles: "$title",
+              urls: "$url",
+              times: "$time",
+            },
+          },
+        },
+      },
+      {
+        $unwind: "$keywords",
+      },
+      {
+        $sort: {
+          date: -1,
+          "keywords.times": -1,
+        },
+      },
+      {
+        $project: {
+          date: "$_id",
+          keywords: 1,
+          _id: 0,
+        },
+      },
+    ]);
+    const result = await cursor.toArray();
+    result.sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return dateB - dateA;
     });
-
-    // keyWord 순서를 data 배열에 있는 시간 순으로 정렬
-    Object.values(groupedByDate).forEach((keywords) => {
-      keywords.sort((a, b) => b.data[0].time.localeCompare(a.data[0].time));
-      keywords.forEach((keyword) => {
-        keyword.data.sort((a, b) => b.time.localeCompare(a.time));
-      });
-    });
-
-    const sortedByDate = Object.entries(groupedByDate).sort((a, b) => b[0].localeCompare(a[0]));
-    // 클라이언트에게 보낼 데이터 생성
-    const dataToSend = sortedByDate.map(([date, keywords]) => ({
-      date,
-      keywords,
-    }));
-    // 클라이언트에게 데이터 전송
+    // result를 클라이언트에게 전송
     client.close();
-    return dataToSend;
+
+    return result;
   } catch (error) {
     throw error;
   }
 };
 
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   // const { userToken } = req.body;
   const authorizationHeader = req.headers.authorization;
   let userToken = null;
-  if (authorizationHeader && authorizationHeader.startsWith('Bearer ')) {
+  if (authorizationHeader && authorizationHeader.startsWith("Bearer ")) {
     userToken = authorizationHeader.substring(7); // "Bearer " 부분을 제외한 토큰 값 추출
   }
   const username = await extractUserName(userToken, process.env.jwtSecret);
   try {
     const dataToSend = await keyWordByDate(username);
-    if (dataToSend === null) {
-      res.status(200).json({ message: '데이터가 없습니다.' });
+
+    if (dataToSend.length === 0) {
+      res.status(200).json({ message: "데이터가 없습니다." });
     } else {
       res.status(200).json({ dataToSend, username });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: '스크랩 데이터 전송 오류' });
+    res.status(500).json({ message: "스크랩 데이터 전송 오류" });
   }
 });
 

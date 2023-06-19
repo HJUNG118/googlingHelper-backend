@@ -14,7 +14,7 @@ const extractUserName = async (token, secretKey) => {
     const client = await MongoClient.connect(conn_str);
     const database = client.db('test');
     const usersCollection = database.collection('users');
-    const user = await usersCollection.findOne({_id: new ObjectId(userID)});
+    const user = await usersCollection.findOne({ _id: new ObjectId(userID) });
     if (user) {
       const userName = user.name;
       return userName;
@@ -125,11 +125,21 @@ const saveUserScrap = async (username, keyWord, url, date, time, title, res) => 
 };
 
 router.post('/', async (req, res) => {
-  const { userToken, keyWord, url, title } = req.body;
-  const dateTime = await getDateAndTime();
-  const username = await extractUserName(userToken, process.env.jwtSecret);
-  // 6489af7bf433c92057edd0b0
-  saveUserScrap(username, keyWord, url, dateTime.date, dateTime.time, title, res);
+  try {
+    const { keyWord, url, title } = req.body;
+    const authorizationHeader = req.headers.authorization;
+    let userToken = null;
+    if (authorizationHeader && authorizationHeader.startsWith('Bearer ')) {
+      userToken = authorizationHeader.substring(7); // "Bearer " 부분을 제외한 토큰 값 추출
+      console.log(userToken);
+    }
+    const dateTime = await getDateAndTime();
+    const username = await extractUserName(userToken, process.env.jwtSecret);
+    // 6489af7bf433c92057edd0b0
+    saveUserScrap(username, keyWord, url, dateTime.date, dateTime.time, title, res);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 module.exports = router;

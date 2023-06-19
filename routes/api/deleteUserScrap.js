@@ -71,15 +71,19 @@ const deleteUserScrap = async (username, url, title, date, res) => {
     return { message: '데이터 삭제 완료' };
   } catch (error) {
     console.error(error);
-    res.status(500).json('스크랩 삭제 오류')
+    res.status(500).json('스크랩 삭제 오류');
   }
 };
 
 router.delete('/', async (req, res) => {
-  const { userToken, url, title, date } = req.body;
   try {
-    // 여기서 토큰은 headers에서, url, title, date는 body에서 꺼내
-    // 토큰 가지고 userEmail 찾아
+    const { url, title, date } = req.body;
+    const authorizationHeader = req.headers.authorization;
+    let userToken = null;
+    if (authorizationHeader && authorizationHeader.startsWith('Bearer ')) {
+      userToken = authorizationHeader.substring(7); // "Bearer " 부분을 제외한 토큰 값 추출
+      console.log(userToken);
+    }
     const username = await extractUserName(userToken, process.env.jwtSecret);
     const message = await deleteUserScrap(username, url, title, date, res);
     res.status(200).json(message);

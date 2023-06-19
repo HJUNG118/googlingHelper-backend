@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const { MongoClient, ObjectId } = require("mongodb");
 const app = express();
 
 app.use(express.json());

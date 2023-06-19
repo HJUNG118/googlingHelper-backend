@@ -22,8 +22,14 @@ app.use("/api/register", registerRouter);
 const loginRouter = require("./routes/api/login");
 app.use("/api/login", loginRouter);
 
+const logoutRouter = require("./routes/api/logout");
+app.use("/api/logout", logoutRouter);
+
 const deleteUserScrapRouter = require("./routes/api/deleteUserScrap");
 app.use("/api/deleteUserScrap", deleteUserScrapRouter);
+
+const deleteKeyWordRouter = require("./routes/api/deleteKeyWord");
+app.use("/api/deleteKeyWord", deleteKeyWordRouter);
 
 const saveUserScrapRouter = require("./routes/api/saveUserScrap");
 app.use("/api/saveUserScrap", saveUserScrapRouter);
@@ -31,20 +37,12 @@ app.use("/api/saveUserScrap", saveUserScrapRouter);
 const keyWordByDateRouter = require("./routes/api/keyWordByDate");
 app.use("/api/keyWordByDate", keyWordByDateRouter);
 
-const deleteKeyWordRouter = require("./routes/api/deleteKeyWord");
-app.use("/api/deleteKeyWord", deleteKeyWordRouter);
-
 const giveUserName = require("./routes/api/giveUserName");
 app.use("/api/giveUserName", giveUserName);
-
-const logoutRouter = require("./routes/api/logout");
-app.use("/api/logout", logoutRouter);
 
 const checkEmail = require("./routes/api/checkEmail");
 app.use("/api/checkEmail", checkEmail);
 
-const usersAllGroup = require("./routes/api/usersAllGroup");
-app.use("/api/usersAllGroup", usersAllGroup);
-
 connectDB();
+
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

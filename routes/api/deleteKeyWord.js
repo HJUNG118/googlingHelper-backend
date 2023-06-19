@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const { ObjectId } = require("mongodb");
 
 const { deleteKeyWord } = require("../../function/deleteKeyWord");
-const { extractUserName} = require("../../function/extractUserName");
+const { extractUserName } = require("../../function/extractUserName");
 
 router.delete("/", async (req, res) => {
   try {

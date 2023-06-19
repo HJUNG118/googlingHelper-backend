@@ -1,11 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { MongoClient } = require("mongodb");
-const conn_str = process.env.mongoURI;
-const jwt = require("jsonwebtoken");
-const { ObjectId } = require("mongodb");
 
-const { extractUserName} = require("../../function/extractUserName");
+const { extractUserName } = require("../../function/extractUserName");
 
 router.post("/", async (req, res) => {
   try {

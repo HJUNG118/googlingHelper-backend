@@ -15,12 +15,12 @@ const extractAllGroup = async (token, secretKey) => {
     const database = client.db('test');
     const usersCollection = database.collection('users');
     const user = await usersCollection.findOne({ _id: new ObjectId(userID) });
-    
+
     if (user) {
       const groups = Object.entries(user.group).map(([groupName, groupOwner]) => {
         return {
           groupName: groupName,
-          groupOwner: groupOwner
+          groupOwner: groupOwner,
         };
       });
       return groups;
@@ -32,8 +32,6 @@ const extractAllGroup = async (token, secretKey) => {
   }
 };
 
-
-
 router.post('/', async (req, res) => {
   try {
     // const { userToken } = req.body;
@@ -41,10 +39,8 @@ router.post('/', async (req, res) => {
     let userToken = null;
     if (authorizationHeader && authorizationHeader.startsWith('Bearer ')) {
       userToken = authorizationHeader.substring(7); // "Bearer " 부분을 제외한 토큰 값 추출
-      console.log(userToken);
     }
     const allGroup = await extractAllGroup(userToken, process.env.jwtSecret);
-    console.log(allGroup)
     res.status(200).json(allGroup);
   } catch (error) {
     res.status(400).json({ message: error.message });

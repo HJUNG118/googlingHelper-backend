@@ -1,31 +1,6 @@
 require("dotenv").config();
 const { MongoClient } = require("mongodb");
-const { ObjectId } = require("mongodb");
-const jwt = require("jsonwebtoken");
 const conn_str = process.env.mongoURI;
-const secretKey = process.env.jwtSecret;
-
-// token과 secretkey이용해서 _id, username추출
-const extractUserName = async (token) => {
-  try {
-    const decoded = jwt.verify(token, secretKey);
-    const decodedUser = decoded.user; // 사용자 ID 반환
-    const userID = String(decodedUser.id);
-    const client = await MongoClient.connect(conn_str);
-    const database = client.db("test");
-    const usersCollection = database.collection("users");
-    const user = await usersCollection.findOne({ _id: new ObjectId(userID) });
-
-    if (user) {
-      const userName = user.name;
-      return userName;
-    } else {
-      throw new Error("User not found");
-    }
-  } catch (error) {
-    throw new Error("Invalid token");
-  }
-};
 
 // 최신 날짜 순으로 키워드 정렬, 키워드에 해당하는 url은 시간 순으로 정렬
 const keyWordByDate = async (username) => {
@@ -98,7 +73,4 @@ const keyWordByDate = async (username) => {
 };
 
 // 함수를 export
-module.exports = {
-  extractUserName,
-  keyWordByDate,
-};
+module.exports = { keyWordByDate };

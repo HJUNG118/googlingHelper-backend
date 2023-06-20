@@ -21,9 +21,12 @@ router.delete("/", async (req, res) => {
     const message = await deleteKeyWord(username, keyWord);
     res.status(200).json(message);
   } catch (error) {
-    console.error("Atlas 및 데이터 삭제 오류:", error);
-    res.status(500).json("오류");
+    console.error(error);
+    res.status(500).json(message);
   }
 });
 
 module.exports = router;
+
+// return : 삭제완료 에서 success
+// error : error

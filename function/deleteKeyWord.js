@@ -14,7 +14,7 @@ const deleteKeyWord = async (username, keyWord) => {
     });
 
     if (deletionResult.deletedCount === 0) {
-      return { message: "삭제된 데이터가 없습니다." };
+      return { message: "error" };
     }
 
     const count = await userScrapCollection.countDocuments();
@@ -22,10 +22,10 @@ const deleteKeyWord = async (username, keyWord) => {
       await userScrapCollection.drop();
     }
 
-    return { message: "데이터 삭제 완료" };
+    return { message: "success" };
   } catch (error) {
     console.error(error);
-    return { message: "데이터 삭제 에러" };
+    return { message: "error" };
   }
 };
 

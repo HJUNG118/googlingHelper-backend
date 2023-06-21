@@ -4,8 +4,17 @@ const jwt = require("jsonwebtoken");
 const conn_str = process.env.mongoURI;
 const secretKey = process.env.jwtSecret;
 
+const { isTokenBlacklisted } = require("../middleware/tokenBlacklist");
+
 const extractUserName = async (token) => {
   try {
+    
+    const isTokenValid = isTokenBlacklisted(token);
+    if (!isTokenValid) {
+      console.log("error : TokenBlacklisted");
+      return res.status(400).json({ msg: "TokenBlacklisted" });
+    }
+
     const decoded = jwt.verify(token, secretKey);
     const decodedUser = decoded.user; // 사용자 ID 반환
     const userID = String(decodedUser.id);

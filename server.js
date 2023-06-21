@@ -31,11 +31,11 @@ app.use("/api/deleteUserScrap", deleteUserScrapRouter);
 const deleteKeyWordRouter = require("./routes/api/deleteKeyWord");
 app.use("/api/deleteKeyWord", deleteKeyWordRouter);
 
-const saveUserScrapRouter = require("./routes/api/saveUserScrap");
-app.use("/api/saveUserScrap", saveUserScrapRouter);
+// const saveUserScrapRouter = require("./routes/api/saveUserScrap");
+// app.use("/api/saveUserScrap", saveUserScrapRouter);
 
-const keyWordByDateRouter = require("./routes/api/keyWordByDate");
-app.use("/api/keyWordByDate", keyWordByDateRouter);
+// const keyWordByDateRouter = require("./routes/api/keyWordByDate");
+// app.use("/api/keyWordByDate", keyWordByDateRouter);
 
 const giveUserName = require("./routes/api/giveUserName");
 app.use("/api/giveUserName", giveUserName);
@@ -49,8 +49,8 @@ app.use("/api/saveScrapText", saveScrapTextRouter);
 const deleteScrapTextRouter = require("./routes/api/deleteScrapText");
 app.use("/api/deleteScrapText", deleteScrapTextRouter);
 
-const scrapTextByDateRouter = require("./routes/api/scrapTextByDate");
-app.use("/api/scrapTextByDate", scrapTextByDateRouter);
+const checkStorageRouter = require("./routes/api/checkStorage");
+app.use("/api/checkStorage", checkStorageRouter);
 
 connectDB();
 

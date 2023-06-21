@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const { extractUserName } = require("../../function/extractUserName");
-const { scrapTextByDate } = require("../../function/scrapTextByDate");
+const { checkStorage } = require("../../function/checkStorage");
 
 router.post("/", async (req, res) => {
   // const { userToken } = req.body;
@@ -14,7 +14,7 @@ router.post("/", async (req, res) => {
 
   const username = await extractUserName(userToken, process.env.jwtSecret);
   try {
-    const dataToSend = await scrapTextByDate(username);
+    const dataToSend = await checkStorage(username);
 
     if (dataToSend.length === 0) {
       res.status(200).json({ message: "데이터가 없습니다." });

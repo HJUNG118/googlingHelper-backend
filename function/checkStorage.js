@@ -3,7 +3,7 @@ const { MongoClient } = require("mongodb");
 const conn_str = process.env.mongoURI;
 
 // 최신 날짜 순으로 키워드 정렬, 키워드에 해당하는 url은 시간 순으로 정렬
-const scrapTextByDate = async (username) => {
+const checkStorage = async (username) => {
   try {
     const client = await MongoClient.connect(conn_str);
     console.log("Atlas에 연결 완료");
@@ -77,4 +77,4 @@ const scrapTextByDate = async (username) => {
 };
 
 // 함수를 export
-module.exports = { scrapTextByDate };
+module.exports = { checkStorage };

@@ -6,11 +6,10 @@ app.use(express.json());
 const cors = require("cors");
 app.use(cors());
 
-const { scrapTextByDate } = require("../../function/scrapTextByDate");
+const { scrapTextByDate } = require("../../function/checkStorage");
 const { getDateAndTime } = require("../../function/getDateAndTime");
-const { extractUserName} = require("../../function/extractUserName");
+const { extractUserName } = require("../../function/extractUserName");
 const { saveScrapText } = require("../../function/saveScrapText");
-
 
 router.post("/", async (req, res) => {
   try {

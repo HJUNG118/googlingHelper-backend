@@ -17,9 +17,9 @@ router.post("/", async (req, res) => {
     }
 
     // 비밀번호 일치 여부 확인
-    const isMatch = bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ errors: [{ msg: "Invalid password" }] });
+      return res.status(400).json({ msg: "Invalid password"});
     }
 
     // JWT 생성
@@ -28,13 +28,16 @@ router.post("/", async (req, res) => {
         id: user.id,
       },
     };
-    
-    
-    jwt.sign(payload, process.env.jwtSecret, { expiresIn: "1h" }, (err, token) => {
-      if (err) throw err;
-      res.json({ token });
-    });
-    
+
+    jwt.sign(
+      payload,
+      process.env.jwtSecret,
+      { expiresIn: "1h" },
+      (err, token) => {
+        if (err) throw err;
+        res.json({ token });
+      }
+    );
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Server Error");

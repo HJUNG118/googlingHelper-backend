@@ -49,6 +49,8 @@ app.use("/api/saveScrapText", saveScrapTextRouter);
 const deleteScrapTextRouter = require("./routes/api/deleteScrapText");
 app.use("/api/deleteScrapText", deleteScrapTextRouter);
 
+const scrapTextByDateRouter = require("./routes/api/scrapTextByDate");
+app.use("/api/scrapTextByDate", scrapTextByDateRouter);
 
 connectDB();
 

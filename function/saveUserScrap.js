@@ -1,3 +1,5 @@
+/* saveScrapText에 통합 */
+
 // require("dotenv").config();
 // const { MongoClient } = require("mongodb");
 // const conn_str = process.env.mongoURI;

@@ -1,3 +1,5 @@
+/* saveScrapText에 통합 */
+
 // const express = require("express");
 // const router = express.Router();
 // const app = express();

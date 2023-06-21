@@ -12,31 +12,42 @@ const saveScrap = async (username, keyWord, url, date, time, title, texts) => {
     const database = client.db("scrapData");
     const scrapCollection = database.collection(username);
 
-    if(texts === undefined){
+    if (texts === undefined) {
       texts = [];
     }
 
-    const newScrap = {
-      user: username,
-      keyWord: keyWord,
-      title: title,
-      url: url,
-      time: time,
-      date: date,
-      text: texts, // texts 배열로 저장
-    };
-    const result = await scrapCollection.findOne({
+    const existingScrap = await scrapCollection.findOne({
       keyWord: keyWord,
       title: title,
     });
-    if (result) {
-      return "duplicate";
+
+    if (existingScrap) {
+      existingScrap.text.push(...texts);
+      const updateResult = await scrapCollection.updateOne(
+        { _id: existingScrap._id },
+        { $set: { text: existingScrap.text } }
+      );
+      if (updateResult.modifiedCount > 0) {
+        return "complete";
+      } else {
+        throw new Error("Failed to update");
+      }
     } else {
+      const newScrap = {
+        user: username,
+        keyWord: keyWord,
+        title: title,
+        url: url,
+        time: time,
+        date: date,
+        text: texts, // texts 배열로 저장
+      };
+
       const insertResult = await scrapCollection.insertOne(newScrap);
       if (insertResult.insertedId) {
         return "complete";
       } else {
-        throw new Error("Failed");
+        throw new Error("Failed to insert");
       }
     }
   } catch (error) {

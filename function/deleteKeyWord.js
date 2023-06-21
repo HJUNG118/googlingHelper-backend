@@ -5,7 +5,7 @@ const conn_str = process.env.mongoURI;
 const deleteKeyWord = async (username, keyWord) => {
   try {
     const client = await MongoClient.connect(conn_str);
-    const database = client.db("search");
+    const database = client.db("scrapKeyWord&title");
     const userScrapCollection = database.collection(username);
 
     // 데이터 삭제

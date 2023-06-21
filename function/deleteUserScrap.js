@@ -6,7 +6,7 @@ const conn_str = process.env.mongoURI;
 const deleteUserScrap = async (username, url, title, date, res) => {
   try {
     const client = await MongoClient.connect(conn_str);
-    const database = client.db("search");
+    const database = client.db("scrapKeyWord&title");
     const userScrapCollection = database.collection(username);
 
     // 데이터 삭제

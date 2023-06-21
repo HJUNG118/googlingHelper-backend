@@ -9,7 +9,7 @@ const saveUserScrap = async (username, keyWord, url, date, time, title) => {
     const session = client.startSession(); // 세션 생성
     session.startTransaction(); // 트랜잭션 시작
     console.log("Atlas에 연결 완료");
-    const database = client.db("search");
+    const database = client.db("scrapKeyWord&title");
     const scrapCollection = database.collection(username);
 
     const newScrap = {

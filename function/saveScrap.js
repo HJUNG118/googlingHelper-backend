@@ -2,7 +2,7 @@ require("dotenv").config();
 const { MongoClient } = require("mongodb");
 const conn_str = process.env.mongoURI;
 
-const saveScrapText = async (username, keyWord, url, date, time, title, texts) => {
+const saveScrap = async (username, keyWord, url, date, time, title, texts) => {
   let client;
   try {
     client = await MongoClient.connect(conn_str);
@@ -48,4 +48,4 @@ const saveScrapText = async (username, keyWord, url, date, time, title, texts) =
   }
 };
 
-module.exports = { saveScrapText };
+module.exports = { saveScrap };

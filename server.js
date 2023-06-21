@@ -43,8 +43,8 @@ app.use("/api/giveUserName", giveUserName);
 const checkEmail = require("./routes/api/checkEmail");
 app.use("/api/checkEmail", checkEmail);
 
-const saveScrapTextRouter = require("./routes/api/saveScrapText");
-app.use("/api/saveScrapText", saveScrapTextRouter);
+const saveScrapRouter = require("./routes/api/saveScrap");
+app.use("/api/saveScrap", saveScrapRouter);
 
 const deleteScrapTextRouter = require("./routes/api/deleteScrapText");
 app.use("/api/deleteScrapText", deleteScrapTextRouter);

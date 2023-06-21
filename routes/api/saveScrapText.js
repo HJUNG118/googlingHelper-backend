@@ -30,7 +30,7 @@ router.post("/", async (req, res) => {
       title,
       texts
     );
-    const dataToSend = await scrapTextByDate(username);
+    
     res.status(200).json({ message: "success" });
   } catch (error) {
     console.error(error);

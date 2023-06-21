@@ -43,6 +43,13 @@ app.use("/api/giveUserName", giveUserName);
 const checkEmail = require("./routes/api/checkEmail");
 app.use("/api/checkEmail", checkEmail);
 
+const saveScrapTextRouter = require("./routes/api/saveScrapText");
+app.use("/api/saveScrapText", saveScrapTextRouter);
+
+const deleteScrapTextRouter = require("./routes/api/deleteScrapText");
+app.use("/api/deleteScrapText", deleteScrapTextRouter);
+
+
 connectDB();
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

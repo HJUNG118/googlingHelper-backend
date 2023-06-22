@@ -1,0 +1,1 @@
+ Reset은 총 3가지의 모드가 존재한다. 1.soft: 파일을 staging area 로 돌려놓음. > commit 하기 전 상태 2. mixed(default) : 파일을 working directory로 돌려놓음 > add 하기 전 상태 3. hard: 파일들 중 tracked 파일들을 working directory 에서 삭제 그리고 취소할 커밋의 수도 선택할 수 있다. 모드는 위의 3가지중 defult값이 mixed로 진행된다.

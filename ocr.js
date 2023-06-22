@@ -1,9 +1,8 @@
 const axios = require('axios');
 const fs = require('fs');
-
-const MY_OCR_API_URL =
-  'https://a9ioimjqm9.apigw.ntruss.com/custom/v1/23288/7bcec74f82cb87718d2a3ef0d35891bfe200f1ee13c8a5b3afc7d2e5023ee08e/general';
-const MY_OCR_SECRET_KEY = 'alZZZGxXQlF4dlpGUWRWTnBFSmNJSXR6UXZIdWVKVmE=';
+require('dotenv').config();
+const MY_OCR_API_URL = process.env.MY_OCR_API_URL;
+const MY_OCR_SECRET_KEY = process.env.MY_OCR_SECRET_KEY;
 
 let config = {
   headers: {

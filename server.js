@@ -43,14 +43,17 @@ app.use('/api/giveUserName', giveUserName);
 const checkEmail = require('./routes/api/checkEmail');
 app.use('/api/checkEmail', checkEmail);
 
-const saveScrapRouter = require("./routes/api/saveScrap");
-app.use("/api/saveScrap", saveScrapRouter);
+const saveScrapRouter = require('./routes/api/saveScrap');
+app.use('/api/saveScrap', saveScrapRouter);
 
-const deleteScrapTextRouter = require("./routes/api/deleteScrapText");
-app.use("/api/deleteScrapText", deleteScrapTextRouter);
+const deleteScrapTextRouter = require('./routes/api/deleteScrapText');
+app.use('/api/deleteScrapText', deleteScrapTextRouter);
 
-const checkStorageRouter = require("./routes/api/checkStorage");
-app.use("/api/checkStorage", checkStorageRouter);
+const checkStorageRouter = require('./routes/api/checkStorage');
+app.use('/api/checkStorage', checkStorageRouter);
+
+const allMemoTitleRouter = require('./routes/api/allMemoTitle');
+app.use('/api/allMemoTitle', allMemoTitleRouter);
 
 connectDB();
 

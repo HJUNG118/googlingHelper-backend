@@ -46,6 +46,9 @@ app.use('/api/deleteScrapText', deleteScrapTextRouter);
 const checkStorageRouter = require('./routes/api/checkStorage');
 app.use('/api/checkStorage', checkStorageRouter);
 
+const scrapCaptureRouter = require('./routes/api/scrapCapture');
+app.use('/api/scrapCapture', scrapCaptureRouter);
+
 connectDB();
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

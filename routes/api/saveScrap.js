@@ -6,11 +6,9 @@ app.use(express.json());
 const cors = require("cors");
 app.use(cors());
 
-const { scrapTextByDate } = require("../../function/scrapTextByDate");
 const { getDateAndTime } = require("../../function/getDateAndTime");
-const { extractUserName} = require("../../function/extractUserName");
-const { saveScrapText } = require("../../function/saveScrapText");
-
+const { extractUserName } = require("../../function/extractUserName");
+const { saveScrap } = require("../../function/saveScrap");
 
 router.post("/", async (req, res) => {
   try {
@@ -22,7 +20,7 @@ router.post("/", async (req, res) => {
     }
     const dateTime = await getDateAndTime();
     const username = await extractUserName(userToken, process.env.jwtSecret);
-    const result = await saveScrapText(
+    const result = await saveScrap(
       username,
       keyWord,
       url,
@@ -31,11 +29,11 @@ router.post("/", async (req, res) => {
       title,
       texts
     );
-    const dataToSend = await scrapTextByDate(username);
-    res.status(200).json(dataToSend);
+    
+    res.status(200).json({ message: "success" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "error" });
   }
 });
 

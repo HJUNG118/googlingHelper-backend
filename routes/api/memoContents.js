@@ -9,6 +9,8 @@ app.use(express.json());
 const cors = require('cors');
 app.use(cors());
 
+const { extractUserName } = require('../../function/extractUserName');
+
 router.post('/', async (req, res) => {
   const client = await MongoClient.connect(conn_str);
   try {
@@ -19,29 +21,24 @@ router.post('/', async (req, res) => {
       userToken = authorizationHeader.substring(7); // "Bearer " 부분을 제외한 토큰 값 추출
     }
     const username = await extractUserName(userToken, process.env.jwtSecret);
-
     const database = client.db('memo');
     const memoCollection = database.collection('memos');
-
     const query = {
       username: username,
       memoTitle: memoTitle,
     };
-
     const memo = await memoCollection.findOne(query);
-
+    client.close();
     if (memo) {
       const responseData = {
         message: 'Memo retrieved successfully',
-        memoContent: memo.memoContent,
+        memoContent: memo.memoContents,
       };
-      client.close();
       res.status(200).json(responseData);
     } else {
       const responseData = {
         message: 'Memo not found',
       };
-      client.close();
       res.status(404).json(responseData);
     }
   } catch (error) {

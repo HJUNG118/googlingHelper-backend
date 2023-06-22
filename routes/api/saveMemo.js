@@ -13,9 +13,7 @@ const { extractUserName } = require('../../function/extractUserName');
 
 router.post('/', async (req, res) => {
   const client = await MongoClient.connect(conn_str);
-  console.log('a');
   try {
-    console.log('saveMemo');
     const { memoTitle, memoContents } = req.body;
     const authorizationHeader = req.headers.authorization;
     let userToken = null;
@@ -25,22 +23,17 @@ router.post('/', async (req, res) => {
     const username = await extractUserName(userToken, process.env.jwtSecret);
     const database = client.db('memo');
     const memoCollection = database.collection('memos');
-
     const query = {
       username: username,
       memoTitle: memoTitle,
     };
-
     const existingMemo = await memoCollection.findOne(query);
-
     if (existingMemo) {
       // 이미 도큐먼트가 존재하는 경우 업데이트
       const update = {
         $set: { memoContents: memoContents },
       };
-
       await memoCollection.updateOne(query, update);
-
       const responseData = {
         message: 'Memo updated successfully',
       };
@@ -53,9 +46,7 @@ router.post('/', async (req, res) => {
         memoTitle: memoTitle,
         memoContents: memoContents,
       };
-
       await memoCollection.insertOne(newMemo);
-
       const responseData = {
         message: 'Memo created successfully',
       };

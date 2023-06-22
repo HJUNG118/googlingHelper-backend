@@ -23,6 +23,7 @@ router.post('/', async (req, res) => {
     const username = await extractUserName(userToken, process.env.jwtSecret);
     const database = client.db('memo');
     const memoCollection = database.collection('memos');
+    await memoCollection.createIndex({ memoTitle: 1 });
     const query = {
       username: username,
       memoTitle: memoTitle,

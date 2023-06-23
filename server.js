@@ -73,6 +73,9 @@ app.use('/api/checkEmail', checkEmail);
 const saveScrapRouter = require('./routes/api/saveScrap');
 app.use('/api/saveScrap', saveScrapRouter);
 
+const deleteMemoRouter = require('./routes/api/deleteMemo');
+app.use('/api/deleteMemo', deleteMemoRouter);
+
 const deleteScrapTextRouter = require('./routes/api/deleteScrapText');
 app.use('/api/deleteScrapText', deleteScrapTextRouter);
 

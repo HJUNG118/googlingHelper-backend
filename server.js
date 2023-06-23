@@ -46,8 +46,11 @@ app.use('/api/deleteScrapText', deleteScrapTextRouter);
 const checkStorageRouter = require('./routes/api/checkStorage');
 app.use('/api/checkStorage', checkStorageRouter);
 
-const scrapCaptureRouter = require('./routes/api/scrapCapture');
-app.use('/api/scrapCapture', scrapCaptureRouter);
+const textCaptureRouter = require('./routes/api/textCapture');
+app.use('/api/textCapture', textCaptureRouter);
+
+const imgCaptureRouter = require('./routes/api/imgCapture');
+app.use('/api/imgCapture', imgCaptureRouter);
 
 connectDB();
 

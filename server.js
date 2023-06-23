@@ -85,6 +85,9 @@ app.use('/api/memoContents', memoContentsRouter);
 const saveMemoRouter = require('./routes/api/saveMemo');
 app.use('/api/saveMemo', saveMemoRouter);
 
+const allMemoTitleRouter = require('./routes/api/allMemoTitle');
+app.use('/api/allMemoTitle', allMemoTitleRouter);
+
 connectDB();
 
 // const HTTPServer = http.createServer(app);

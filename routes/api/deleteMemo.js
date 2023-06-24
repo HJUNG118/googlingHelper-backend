@@ -7,7 +7,7 @@ const { extractUserName } = require('../../function/extractUserName');
 
 router.delete('/', async (req, res) => {
   try {
-    const { memoTitle } = req.body;
+    const { time } = req.body;
     const authorizationHeader = req.headers.authorization;
     let userToken = null;
     if (authorizationHeader && authorizationHeader.startsWith('Bearer ')) {
@@ -15,7 +15,7 @@ router.delete('/', async (req, res) => {
     }
     const username = await extractUserName(userToken, process.env.jwtSecret);
 
-    const message = await deleteMemo(username, memoTitle);
+    const message = await deleteMemo(username, time);
     res.status(200).json(message);
   } catch (error) {
     console.error(error);

@@ -3,7 +3,7 @@ const { MongoClient } = require('mongodb');
 const conn_str = process.env.mongoURI;
 
 // 스크랩 텍스트 삭제
-const deleteMemo = async (username, memoTitle) => {
+const deleteMemo = async (username, time) => {
   const client = await MongoClient.connect(conn_str);
   try {
     const database = client.db('memo');
@@ -12,11 +12,11 @@ const deleteMemo = async (username, memoTitle) => {
     // 데이터 삭제
     const deletionResult = await userScrapCollection.deleteOne({
       username: username,
-      memoTitle: memoTitle,
+      time: time,
     });
 
     if (deletionResult.deletedCount === 0) {
-      return { message: 'Nonexistent ' };
+      return { message: 'Nonexistent' };
     }
     return { message: 'success' };
   } catch (error) {

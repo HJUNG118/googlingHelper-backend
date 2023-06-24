@@ -31,12 +31,6 @@ app.use('/api/deleteUserScrap', deleteUserScrapRouter);
 const deleteKeyWordRouter = require('./routes/api/deleteKeyWord');
 app.use('/api/deleteKeyWord', deleteKeyWordRouter);
 
-// const saveUserScrapRouter = require("./routes/api/saveUserScrap");
-// app.use("/api/saveUserScrap", saveUserScrapRouter);
-
-// const keyWordByDateRouter = require("./routes/api/keyWordByDate");
-// app.use("/api/keyWordByDate", keyWordByDateRouter);
-
 const giveUserName = require('./routes/api/giveUserName');
 app.use('/api/giveUserName', giveUserName);
 

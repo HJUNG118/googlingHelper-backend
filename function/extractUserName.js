@@ -11,8 +11,7 @@ const extractUserName = async (token) => {
   try {
     const TokenBlacklisted = isTokenBlacklisted(token);
     if (TokenBlacklisted) {
-      console.log('==error : TokenBlacklisted');
-      return res.status(400).json({ msg: 'TokenBlacklisted' });
+      throw new Error("Token is blacklisted");
     }
     const decoded = jwt.verify(token, secretKey);
 
@@ -26,12 +25,14 @@ const extractUserName = async (token) => {
       const userName = user.name;
       return userName;
     } else {
-      throw new Error('User not found');
+      return { message: "User not found" };
     }
   } catch (error) {
-    client.close();
-    throw new Error('Invalid token');
+    return Promise.reject(error);
   }
 };
 
 module.exports = { extractUserName };
+
+
+    

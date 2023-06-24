@@ -19,7 +19,7 @@ router.post("/", async (req, res) => {
       userToken = authorizationHeader.substring(7);
     }
     const dateTime = await getDateAndTime();
-    const username = await extractUserName(userToken, process.env.jwtSecret);
+    const username = await extractUserName(userToken, res);
     const result = await saveScrap(
       username,
       keyWord,

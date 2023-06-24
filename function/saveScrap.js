@@ -51,7 +51,7 @@ const saveScrap = async (username, keyWord, url, date, time, title, texts) => {
       }
     }
   } catch (error) {
-    throw error;
+    return Promise.reject(error);
   } finally {
     if (client) {
       client.close();

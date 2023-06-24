@@ -8,19 +8,18 @@ const deleteMemo = async (username, time) => {
   try {
     const database = client.db('memo');
     const userScrapCollection = database.collection('memos');
-
-    // 데이터 삭제
     const deletionResult = await userScrapCollection.deleteOne({
       username: username,
       time: time,
     });
-
     if (deletionResult.deletedCount === 0) {
+      client.close();
       return { message: 'Nonexistent' };
     }
+    client.close();
     return { message: 'success' };
   } catch (error) {
-    console.error(error);
+    client.close();
     return { message: 'error' };
   }
 };

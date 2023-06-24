@@ -21,8 +21,6 @@ router.post('/', async (req, res) => {
     const username = await extractUserName(userToken, process.env.jwtSecret);
     const database = client.db('memo');
     const memoCollection = database.collection('memos');
-
-    // 도큐먼트들의 memoTitle 필드를 추출
     const query = { username: username };
     const projection = { memoTitle: 1, time: 1 };
     const result = await memoCollection.find(query, projection).toArray();
@@ -30,11 +28,8 @@ router.post('/', async (req, res) => {
       memoTitle: doc.memoTitle,
       time: doc.time,
     }));
-    console.log(memoData);
-
     res.status(200).json({ memoData });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: 'error' });
   } finally {
     client.close();

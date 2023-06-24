@@ -76,5 +76,4 @@ const checkStorage = async (username) => {
   }
 };
 
-// 함수를 export
 module.exports = { checkStorage };

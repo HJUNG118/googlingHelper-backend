@@ -10,7 +10,6 @@ const saveScrap = async (username, keyWord, url, date, time, title, texts) => {
     session.startTransaction(); // 트랜잭션 시작
     console.log("Atlas에 연결 완료");
     const database = client.db("scrapData");
-    console.log(username);
     const scrapCollection = database.collection(username);
 
     if (texts === undefined) {

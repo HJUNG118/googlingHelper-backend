@@ -14,7 +14,7 @@ const { extractUserName } = require('../../function/extractUserName');
 router.post('/', async (req, res) => {
   const client = await MongoClient.connect(conn_str);
   try {
-    const { memoTitle } = req.body;
+    const { time } = req.body;
     const authorizationHeader = req.headers.authorization;
     let userToken = null;
     if (authorizationHeader && authorizationHeader.startsWith('Bearer ')) {
@@ -25,21 +25,18 @@ router.post('/', async (req, res) => {
     const memoCollection = database.collection('memos');
     const query = {
       username: username,
-      memoTitle: memoTitle,
+      time: time,
     };
     const memo = await memoCollection.findOne(query);
     client.close();
     if (memo) {
       const responseData = {
-        message: 'Memo retrieved successfully',
+        memoTitle: memo.memoTitle,
         memoContent: memo.memoContents,
       };
       res.status(200).json(responseData);
     } else {
-      const responseData = {
-        message: 'Memo not found',
-      };
-      res.status(404).json(responseData);
+      res.status(404).json({ message: 'not found' });
     }
   } catch (error) {
     console.error(error);

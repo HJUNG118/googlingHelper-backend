@@ -17,29 +17,6 @@ app.get('/', (req, res) => {
   res.status(200).send('API Running');
 });
 
-// wss.on('connection', function (ws) {
-//   ws.on('message', function (message) {
-//     var messageObj = JSON.parse(message);
-
-//     if (messageObj.type === 'save') {
-//       var newMemo = new Memo({ content: messageObj.content.join('\n') });
-//       newMemo
-//         .save()
-//         .then(() => {
-//           console.log('Memo saved to MongoDB');
-//         })
-//         .catch((err) => {
-//           console.error(err);
-//         });
-//     } else {
-//       // 받은 메시지를 모든 클라이언트에게 전송
-//       wss.clients.forEach(function (client) {
-//         client.send(message);
-//       });
-//     }
-//   });
-// });
-
 const authRouter = require('./routes/api/auth');
 app.use('/api/auth', authRouter);
 
@@ -57,12 +34,6 @@ app.use('/api/deleteUserScrap', deleteUserScrapRouter);
 
 const deleteKeyWordRouter = require('./routes/api/deleteKeyWord');
 app.use('/api/deleteKeyWord', deleteKeyWordRouter);
-
-// const saveUserScrapRouter = require("./routes/api/saveUserScrap");
-// app.use("/api/saveUserScrap", saveUserScrapRouter);
-
-// const keyWordByDateRouter = require("./routes/api/keyWordByDate");
-// app.use("/api/keyWordByDate", keyWordByDateRouter);
 
 const giveUserName = require('./routes/api/giveUserName');
 app.use('/api/giveUserName', giveUserName);
@@ -93,15 +64,4 @@ app.use('/api/allMemoTitle', allMemoTitleRouter);
 
 connectDB();
 
-// const HTTPServer = http.createServer(app);
-
-// HTTPServer.on('upgrade', function upgrade(request, socket, head) {
-//   wss.handleUpgrade(request, socket, head, function done(ws) {
-//     wss.emit('connection', ws, request);
-//   });
-// });
-
-// HTTPServer.listen(PORT, () => {
-//   console.log(`Server started on port ${PORT}`);
-// });
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

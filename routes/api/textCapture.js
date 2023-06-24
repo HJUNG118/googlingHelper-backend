@@ -43,7 +43,7 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
 });
 
-router.post('/', upload.single('texts'), async (req, res) => {
+router.post('/', upload.single('image'), async (req, res) => {
   try {
     const { keyWord, title } = req.body;
     const authorizationHeader = req.headers.authorization;
@@ -95,7 +95,6 @@ const processImageAsync = async (username, keyWord, date, time, title, imgUrl) =
     response.data.images[0].fields.forEach((element) => {
       combinedText += ' ' + element.inferText;
     });
-    console.log(combinedText);
     const result = await saveScrap(username, keyWord, null, date, time, title, combinedText, null);
     return result;
   } catch (error) {

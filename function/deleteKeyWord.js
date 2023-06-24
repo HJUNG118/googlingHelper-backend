@@ -1,11 +1,11 @@
-require("dotenv").config();
-const { MongoClient } = require("mongodb");
+require('dotenv').config();
+const { MongoClient } = require('mongodb');
 const conn_str = process.env.mongoURI;
 
 const deleteKeyWord = async (username, keyWord) => {
+  const client = await MongoClient.connect(conn_str);
   try {
-    const client = await MongoClient.connect(conn_str);
-    const database = client.db("scrapData");
+    const database = client.db('scrapData');
     const userScrapCollection = database.collection(username);
 
     // 데이터 삭제
@@ -14,18 +14,19 @@ const deleteKeyWord = async (username, keyWord) => {
     });
 
     if (deletionResult.deletedCount === 0) {
-      return { message: "error" };
+      client.close();
+      return { message: 'error' };
     }
 
     const count = await userScrapCollection.countDocuments();
     if (count === 0) {
       await userScrapCollection.drop();
     }
-
-    return { message: "success" };
+    client.close();
+    return { message: 'success' };
   } catch (error) {
-    console.error(error);
-    return { message: "error" };
+    client.close();
+    return { message: 'error' };
   }
 };
 

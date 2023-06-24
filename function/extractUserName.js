@@ -6,7 +6,7 @@ const secretKey = process.env.jwtSecret;
 
 const { isTokenBlacklisted } = require("../middleware/tokenBlacklist");
 
-const extractUserName = async (token, res) => {
+const extractUserName = async (token) => {
   try {
     
     const TokenBlacklisted = isTokenBlacklisted(token);

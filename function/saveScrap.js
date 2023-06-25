@@ -3,7 +3,7 @@ const { MongoClient } = require('mongodb');
 const conn_str = process.env.mongoURI;
 
 const saveScrap = async (username, keyWord, url, date, time, title, texts, img) => {
-  const client = await MongoClient.connect(conn_str);;
+  const client = await MongoClient.connect(conn_str);
   try {
     const session = client.startSession(); // 세션 생성
     session.startTransaction(); // 트랜잭션 시작
@@ -14,9 +14,10 @@ const saveScrap = async (username, keyWord, url, date, time, title, texts, img) 
     if (existingScrap) {
       if (texts && texts.length > 0) {
         updateResult = await scrapCollection.updateOne({ _id: existingScrap._id }, { $push: { text: texts } });
-      }
-      if (img && img.length > 0) {
+      } else if (img && img.length > 0) {
         updateResult = await scrapCollection.updateOne({ _id: existingScrap._id }, { $push: { img: img } });
+      } else {
+        return 'duplicate';
       }
       if (updateResult && updateResult.modifiedCount > 0) {
         return 'update';

@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
     if (authorizationHeader && authorizationHeader.startsWith('Bearer ')) {
       userToken = authorizationHeader.substring(7);
     }
-    const username = await extractUserName(userTokent);
+    const username = await extractUserName(userToken);
     const database = client.db('memo');
     const memoCollection = database.collection('memos');
     await memoCollection.createIndex({ memoTitle: 1 });

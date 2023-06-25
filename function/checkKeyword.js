@@ -92,12 +92,11 @@ const checkKeyword = async (username) => {
       },
     ]);
     const result = await cursor.toArray();
-    // result를 클라이언트에게 전송
-    client.close();
-
     return result;
   } catch (error) {
     throw error;
+  } finally {
+    client.close();
   }
 };
 

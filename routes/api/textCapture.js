@@ -45,7 +45,7 @@ const upload = multer({
 
 router.post('/', upload.single('image'), async (req, res) => {
   try {
-    const { keyWord, title } = req.body;
+    const { keyWord, title, url } = req.body;
     const authorizationHeader = req.headers.authorization;
     let userToken = null;
     if (authorizationHeader && authorizationHeader.startsWith('Bearer ')) {
@@ -55,14 +55,14 @@ router.post('/', upload.single('image'), async (req, res) => {
     const username = await extractUserName(userToken, process.env.jwtSecret);
     const imgUrl = req.file.location;
     // const resizeurl = imageUrl.replace(/\/original\//, '/resize/');
-    const result = await processImageAsync(username, keyWord, dateTime.date, dateTime.time, title, imgUrl);
+    const result = await processImageAsync(username, keyWord, url, dateTime.date, dateTime.time, title, imgUrl);
     res.status(200).json({ message: result });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-const processImageAsync = async (username, keyWord, date, time, title, imgUrl) => {
+const processImageAsync = async (username, keyWord, url, date, time, title, imgUrl) => {
   const MY_OCR_API_URL = process.env.MY_OCR_API_URL;
   const MY_OCR_SECRET_KEY = process.env.MY_OCR_SECRET_KEY;
   const config = {
@@ -95,7 +95,7 @@ const processImageAsync = async (username, keyWord, date, time, title, imgUrl) =
     response.data.images[0].fields.forEach((element) => {
       combinedText += ' ' + element.inferText;
     });
-    const result = await saveScrap(username, keyWord, null, date, time, title, combinedText, null);
+    const result = await saveScrap(username, keyWord, url, date, time, title, combinedText, null);
     return result;
   } catch (error) {
     throw error;

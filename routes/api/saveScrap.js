@@ -12,7 +12,7 @@ const { saveScrap } = require('../../function/saveScrap');
 
 router.post('/', async (req, res) => {
   try {
-    const { keyWord, url, title, texts } = req.body;
+    const { keyWord, url, title } = req.body;
     const authorizationHeader = req.headers.authorization;
     let userToken = null;
     if (authorizationHeader && authorizationHeader.startsWith('Bearer ')) {
@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
     }
     const dateTime = await getDateAndTime();
     const username = await extractUserName(userToken, process.env.jwtSecret);
-    const result = await saveScrap(username, keyWord, url, dateTime.date, dateTime.time, title, texts);
+    const result = await saveScrap(username, keyWord, url, dateTime.date, dateTime.time, title, null, null);
 
     res.status(200).json({ message: 'success' });
   } catch (error) {

@@ -37,7 +37,7 @@ const upload = multer({
 
 router.post('/', upload.single('image'), async (req, res) => {
   try {
-    const { keyWord, title } = req.body;
+    const { keyWord, title, url } = req.body;
     const authorizationHeader = req.headers.authorization;
     let userToken = null;
     if (authorizationHeader && authorizationHeader.startsWith('Bearer ')) {
@@ -49,7 +49,7 @@ router.post('/', upload.single('image'), async (req, res) => {
     // const resizeurl = imageUrl.replace(/\/original\//, '/resize/');
     console.log(imgUrl);
     console.log(title);
-    const result = await saveScrap(username, keyWord, null, dateTime.date, dateTime.time, title, null, imgUrl);
+    const result = await saveScrap(username, keyWord, url, dateTime.date, dateTime.time, title, null, imgUrl);
     res.status(200).json({ message: result });
   } catch (error) {
     res.status(500).json({ message: error.message });

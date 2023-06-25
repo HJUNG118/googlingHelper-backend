@@ -4,9 +4,8 @@ const conn_str = process.env.mongoURI;
 
 // 최신 날짜 순으로 키워드 정렬, 키워드에 해당하는 url은 시간 순으로 정렬
 const checkStorage = async (username) => {
+  const client = await MongoClient.connect(conn_str);
   try {
-    const client = await MongoClient.connect(conn_str);
-    console.log('Atlas에 연결 완료');
     const database = client.db('scrapData');
     const userScrapCollection = database.collection(username);
     const cursor = userScrapCollection.aggregate([
@@ -40,6 +39,12 @@ const checkStorage = async (username) => {
         },
       },
       {
+        $sort: {
+          '_id.date': -1,
+          'time.0': -1,
+        },
+      },
+      {
         $group: {
           _id: '$_id.date',
           keywords: {
@@ -60,11 +65,6 @@ const checkStorage = async (username) => {
       {
         $sort: {
           _id: -1,
-        },
-      },
-      {
-        $sort: {
-          'keywords.times.0': -1,
         },
       },
       {

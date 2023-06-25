@@ -59,7 +59,12 @@ const checkStorage = async (username) => {
       },
       {
         $sort: {
-          'keywords.times': -1,
+          _id: -1,
+        },
+      },
+      {
+        $sort: {
+          'keywords.times.0': -1,
         },
       },
       {

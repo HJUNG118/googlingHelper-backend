@@ -15,11 +15,9 @@ const saveScrap = async (username, keyWord, url, date, time, title, texts, img) 
     if (existingScrap) {
       // Update existing scrap with texts and/or img
       if (texts && texts.length > 0) {
-        console.log('texts in');
         updateResult = await scrapCollection.updateOne({ _id: existingScrap._id }, { $push: { text: texts } });
       }
       if (img && img.length > 0) {
-        console.log('img in');
         updateResult = await scrapCollection.updateOne({ _id: existingScrap._id }, { $push: { img: img } });
       }
       if (updateResult && updateResult.modifiedCount > 0) {
@@ -28,7 +26,6 @@ const saveScrap = async (username, keyWord, url, date, time, title, texts, img) 
         throw new Error('Failed to update');
       }
     } else {
-      console.log('new');
       const newScrap = {
         user: username,
         keyWord: keyWord,

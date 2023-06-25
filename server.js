@@ -46,6 +46,9 @@ app.use('/api/deleteScrapText', deleteScrapTextRouter);
 const checkStorageRouter = require('./routes/api/checkStorage');
 app.use('/api/checkStorage', checkStorageRouter);
 
+const checkStorageRouter = require('./routes/api/checkStorage');
+app.use('/api/checkStorage', checkRouter);
+
 const textCaptureRouter = require('./routes/api/textCapture');
 app.use('/api/textCapture', textCaptureRouter);
 

@@ -53,6 +53,15 @@ app.use('/api/deleteScrapText', deleteScrapTextRouter);
 const checkStorageRouter = require('./routes/api/checkStorage');
 app.use('/api/checkStorage', checkStorageRouter);
 
+const checkKeywordRouter = require('./routes/api/checkKeyword');
+app.use('/api/checkKeyword', checkKeywordRouter);
+
+const textCaptureRouter = require('./routes/api/textCapture');
+app.use('/api/textCapture', textCaptureRouter);
+
+const imgCaptureRouter = require('./routes/api/imgCapture');
+app.use('/api/imgCapture', imgCaptureRouter);
+
 const memoContentsRouter = require('./routes/api/memoContents');
 app.use('/api/memoContents', memoContentsRouter);
 

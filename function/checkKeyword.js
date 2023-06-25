@@ -3,7 +3,7 @@ const { MongoClient } = require('mongodb');
 const conn_str = process.env.mongoURI;
 
 // 최신 날짜 순으로 키워드 정렬, 키워드에 해당하는 url은 시간 순으로 정렬
-const checkStorage = async (username) => {
+const checkKeyword = async (username) => {
   try {
     const client = await MongoClient.connect(conn_str);
     console.log('Atlas에 연결 완료');
@@ -19,8 +19,8 @@ const checkStorage = async (username) => {
       {
         $group: {
           _id: {
-            date: '$date',
             keyword: '$keyWord',
+            date: '$date',
           },
           title: {
             $push: '$title',
@@ -41,10 +41,10 @@ const checkStorage = async (username) => {
       },
       {
         $group: {
-          _id: '$_id.date',
-          keywords: {
+          _id: '$_id.keyword',
+          dates: {
             $push: {
-              keyword: '$_id.keyword',
+              date: '$_id.date',
               titles: '$title',
               urls: '$url',
               times: '$time',
@@ -55,7 +55,28 @@ const checkStorage = async (username) => {
         },
       },
       {
-        $unwind: '$keywords',
+        $unwind: '$dates',
+      },
+      {
+        $sort: {
+          _id: 1,
+          'dates.date': -1,
+        },
+      },
+      {
+        $group: {
+          _id: '$_id',
+          dates: {
+            $push: {
+              date: '$dates.date',
+              titles: '$dates.titles',
+              urls: '$dates.urls',
+              times: '$dates.times',
+              texts: '$dates.texts',
+              img: '$dates.img',
+            },
+          },
+        },
       },
       {
         $sort: {
@@ -63,14 +84,9 @@ const checkStorage = async (username) => {
         },
       },
       {
-        $sort: {
-          'keywords.times.0': -1,
-        },
-      },
-      {
         $project: {
-          date: '$_id',
-          keywords: 1,
+          keyword: '$_id',
+          dates: 1,
           _id: 0,
         },
       },
@@ -84,4 +100,5 @@ const checkStorage = async (username) => {
   }
 };
 
-module.exports = { checkStorage };
+// 함수를 export
+module.exports = { checkKeyword };

@@ -2,33 +2,24 @@ require('dotenv').config();
 const { MongoClient } = require('mongodb');
 const conn_str = process.env.mongoURI;
 
-const saveScrap = async (username, keyWord, url, date, time, title, texts) => {
-  let client;
+const saveScrap = async (username, keyWord, url, date, time, title, texts, img) => {
+  const client = await MongoClient.connect(conn_str);;
   try {
-    client = await MongoClient.connect(conn_str);
     const session = client.startSession(); // 세션 생성
     session.startTransaction(); // 트랜잭션 시작
-    console.log('Atlas에 연결 완료');
     const database = client.db('scrapData');
     const scrapCollection = database.collection(username);
-
-    if (texts === undefined) {
-      texts = [];
-    }
-
-    const existingScrap = await scrapCollection.findOne({
-      keyWord: keyWord,
-      title: title,
-    });
-
+    const existingScrap = await scrapCollection.findOne({ title: title, keyWord: keyWord });
+    let updateResult;
     if (existingScrap) {
-      existingScrap.text.push(...texts);
-      const updateResult = await scrapCollection.updateOne(
-        { _id: existingScrap._id },
-        { $set: { text: existingScrap.text } }
-      );
-      if (updateResult.modifiedCount > 0) {
-        return 'complete';
+      if (texts && texts.length > 0) {
+        updateResult = await scrapCollection.updateOne({ _id: existingScrap._id }, { $push: { text: texts } });
+      }
+      if (img && img.length > 0) {
+        updateResult = await scrapCollection.updateOne({ _id: existingScrap._id }, { $push: { img: img } });
+      }
+      if (updateResult && updateResult.modifiedCount > 0) {
+        return 'update';
       } else {
         throw new Error('Failed to update');
       }
@@ -40,7 +31,8 @@ const saveScrap = async (username, keyWord, url, date, time, title, texts) => {
         url: url,
         time: time,
         date: date,
-        text: texts, // texts 배열로 저장
+        text: texts && texts.length > 0 ? [texts] : [], // Store texts if it exists, otherwise store an empty array
+        img: img && img.length > 0 ? [img] : [], // Store img if it exists, otherwise store an empty array
       };
 
       const insertResult = await scrapCollection.insertOne(newScrap);

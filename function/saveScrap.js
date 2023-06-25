@@ -17,9 +17,11 @@ const saveScrap = async (username, keyWord, url, date, time, title, texts, img) 
       } else if (img && img.length > 0) {
         updateResult = await scrapCollection.updateOne({ _id: existingScrap._id }, { $push: { img: img } });
       } else {
+        client.close();
         return 'duplicate';
       }
       if (updateResult && updateResult.modifiedCount > 0) {
+        client.close();
         return 'update';
       } else {
         throw new Error('Failed to update');
@@ -38,17 +40,15 @@ const saveScrap = async (username, keyWord, url, date, time, title, texts, img) 
 
       const insertResult = await scrapCollection.insertOne(newScrap);
       if (insertResult.insertedId) {
+        client.close();
         return 'complete';
       } else {
         throw new Error('Failed to insert');
       }
     }
   } catch (error) {
+    client.close();
     return Promise.reject(error);
-  } finally {
-    if (client) {
-      client.close();
-    }
   }
 };
 

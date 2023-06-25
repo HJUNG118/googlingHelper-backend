@@ -17,7 +17,7 @@ router.delete("/", async (req, res) => {
     if (authorizationHeader && authorizationHeader.startsWith("Bearer ")) {
       userToken = authorizationHeader.substring(7); // "Bearer " 부분을 제외한 토큰 값 추출
     }
-    const username = await extractUserName(userToken, process.env.jwtSecret);
+    const username = await extractUserName(userToken);
     const message = await deleteKeyWord(username, keyWord);
     res.status(200).json(message);
   } catch (error) {

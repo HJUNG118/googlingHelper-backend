@@ -5,14 +5,14 @@ const { extractUserName } = require("../../function/extractUserName");
 const { checkStorage } = require("../../function/checkStorage");
 
 router.post("/", async (req, res) => {
-  const authorizationHeader = req.headers.authorization;
-  let userToken = null;
-  if (authorizationHeader && authorizationHeader.startsWith("Bearer ")) {
-    userToken = authorizationHeader.substring(7); // "Bearer " 부분을 제외한 토큰 값 추출
-  }
-
-  const username = await extractUserName(userToken, process.env.jwtSecret);
   try {
+    const authorizationHeader = req.headers.authorization;
+    let userToken = null;
+    if (authorizationHeader && authorizationHeader.startsWith("Bearer ")) {
+      userToken = authorizationHeader.substring(7);
+    }
+
+    const username = await extractUserName(userToken);
     const dataToSend = await checkStorage(username);
 
     if (dataToSend.length === 0) {
@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "스크랩 데이터 전송 오류" });
+    res.status(500).json({ message: "Error-checkStorage" });
   }
 });
 

@@ -3,17 +3,15 @@ const { MongoClient } = require('mongodb');
 const conn_str = process.env.mongoURI;
 
 const saveScrap = async (username, keyWord, url, date, time, title, texts, img) => {
-  const client = await MongoClient.connect(conn_str);
+  const client = await MongoClient.connect(conn_str);;
   try {
-    // Connect to the database
-    const db = client.db('scrapData');
-    const scrapCollection = db.collection(username);
-
-    // Check if the scrap already exists
+    const session = client.startSession(); // 세션 생성
+    session.startTransaction(); // 트랜잭션 시작
+    const database = client.db('scrapData');
+    const scrapCollection = database.collection(username);
     const existingScrap = await scrapCollection.findOne({ title: title, keyWord: keyWord });
     let updateResult;
     if (existingScrap) {
-      // Update existing scrap with texts and/or img
       if (texts && texts.length > 0) {
         updateResult = await scrapCollection.updateOne({ _id: existingScrap._id }, { $push: { text: texts } });
       }
@@ -45,7 +43,7 @@ const saveScrap = async (username, keyWord, url, date, time, title, texts, img) 
       }
     }
   } catch (error) {
-    throw error;
+    return Promise.reject(error);
   } finally {
     if (client) {
       client.close();

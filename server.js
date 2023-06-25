@@ -1,7 +1,11 @@
 const express = require('express');
 const connectDB = require('./config/db');
+// var WebSocket = require('ws');
 const app = express();
 const PORT = 8080;
+// const wss = new WebSocket.Server({
+//   server: HTTPServer, // WebSocket서버에 연결할 HTTP서버를 지정한다.
+// });
 
 app.use(express.json());
 const cors = require('cors');
@@ -10,7 +14,7 @@ app.use(cors());
 app.use(express.json({ extended: false }));
 
 app.get('/', (req, res) => {
-  res.send('API Running');
+  res.status(200).send('API Running');
 });
 
 const authRouter = require('./routes/api/auth');
@@ -40,6 +44,9 @@ app.use('/api/checkEmail', checkEmail);
 const saveScrapRouter = require('./routes/api/saveScrap');
 app.use('/api/saveScrap', saveScrapRouter);
 
+const deleteMemoRouter = require('./routes/api/deleteMemo');
+app.use('/api/deleteMemo', deleteMemoRouter);
+
 const deleteScrapTextRouter = require('./routes/api/deleteScrapText');
 app.use('/api/deleteScrapText', deleteScrapTextRouter);
 
@@ -54,6 +61,15 @@ app.use('/api/textCapture', textCaptureRouter);
 
 const imgCaptureRouter = require('./routes/api/imgCapture');
 app.use('/api/imgCapture', imgCaptureRouter);
+
+const memoContentsRouter = require('./routes/api/memoContents');
+app.use('/api/memoContents', memoContentsRouter);
+
+const saveMemoRouter = require('./routes/api/saveMemo');
+app.use('/api/saveMemo', saveMemoRouter);
+
+const allMemoTitleRouter = require('./routes/api/allMemoTitle');
+app.use('/api/allMemoTitle', allMemoTitleRouter);
 
 connectDB();
 

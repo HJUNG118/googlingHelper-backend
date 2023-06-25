@@ -11,7 +11,7 @@ router.post('/', async (req, res) => {
     userToken = authorizationHeader.substring(7); // "Bearer " 부분을 제외한 토큰 값 추출
   }
 
-  const username = await extractUserName(userToken, process.env.jwtSecret);
+  const username = await extractUserName(userToken);
   try {
     const dataToSend = await checkKeyword(username);
 

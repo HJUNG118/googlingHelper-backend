@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
     if (authorizationHeader && authorizationHeader.startsWith('Bearer ')) {
       userToken = authorizationHeader.substring(7);
     }
-    const username = await extractUserName(userToken, process.env.jwtSecret);
+    const username = await extractUserName(userToken);
     const database = client.db('memo');
     const memoCollection = database.collection('memos');
     const query = { username: username };

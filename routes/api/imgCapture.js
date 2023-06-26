@@ -23,7 +23,6 @@ const s3Client = new S3Client({
 //* AWS S3 multer 설정
 const upload = multer({
   storage: multerS3({
-    // 저장 위치
     s3: s3Client,
     bucket: 'tentenimg',
     contentType: multerS3.AUTO_CONTENT_TYPE,
@@ -31,8 +30,7 @@ const upload = multer({
       cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`);
     },
   }),
-  //* 용량 제한
-  limits: { fileSize: 5 * 1024 * 1024 },
+  limits: { fileSize: 5 * 1024 * 1024 }, // 용량 제한 설정 (5MB)
 });
 
 router.post('/', upload.single('image'), async (req, res) => {
@@ -46,10 +44,8 @@ router.post('/', upload.single('image'), async (req, res) => {
     const dateTime = await getDateAndTime();
     const username = await extractUserName(userToken);
     const imgUrl = req.file.location;
-    // const resizeurl = imageUrl.replace(/\/original\//, '/resize/');
-    console.log(imgUrl);
-    console.log(title);
-    const result = await saveScrap(username, keyWord, url, dateTime.date, dateTime.time, title, null, imgUrl);
+    const resizeUrl = imgUrl.replace(/\/original\//, '/resize/');
+    const result = await saveScrap(username, keyWord, url, dateTime.date, dateTime.time, title, null, resizeUrl);
     res.status(200).json({ message: result });
   } catch (error) {
     res.status(500).json({ message: error.message });

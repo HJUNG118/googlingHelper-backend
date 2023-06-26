@@ -11,10 +11,9 @@ const extractUserName = async (token) => {
   try {
     const TokenBlacklisted = isTokenBlacklisted(token);
     if (TokenBlacklisted) {
-      throw new Error("Token is blacklisted");
+      throw new Error('Token is blacklisted');
     }
     const decoded = jwt.verify(token, secretKey);
-
     const decodedUser = decoded.user; // 사용자 ID 반환
     const userID = String(decodedUser.id);
     const database = client.db('test');
@@ -25,7 +24,7 @@ const extractUserName = async (token) => {
       const userName = user.name;
       return userName;
     } else {
-      return { message: "User not found" };
+      return { message: 'User not found' };
     }
   } catch (error) {
     return Promise.reject(error);
@@ -33,6 +32,3 @@ const extractUserName = async (token) => {
 };
 
 module.exports = { extractUserName };
-
-
-    

@@ -1,13 +1,15 @@
+const moment = require('moment-timezone');
+
+// 서버 시간대 설정
+const serverTimezone = 'Asia/Seoul'; // 서버의 시간대에 맞게 설정해야 함
+
 const getDateAndTime = async () => {
-  const now = new Date(); // 현재 시간을 가져옴
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  const day = String(now.getDate()).padStart(2, "0");
-  const date = `${year}-${month}-${day}`;
-  const hours = now.getHours().toString().padStart(2, "0");
-  const minutes = now.getMinutes().toString().padStart(2, "0");
-  const seconds = now.getSeconds().toString().padStart(2, "0");
-  const time = `${hours}:${minutes}:${seconds}`;
+  const now = moment().tz(serverTimezone); // 서버 시간대를 기준으로 현재 시간을 가져옴
+
+  // 날짜와 시간 추출
+  const date = now.format('YYYY-MM-DD');
+  const time = now.format('HH:mm:ss');
+
   const dateTime = {
     time: time,
     date: date,

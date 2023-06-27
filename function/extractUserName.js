@@ -7,12 +7,19 @@ const secretKey = process.env.jwtSecret;
 const { isTokenBlacklisted } = require('../middleware/tokenBlacklist');
 
 const extractUserName = async (token) => {
+
   const client = await MongoClient.connect(conn_str);
   try {
     const TokenBlacklisted = isTokenBlacklisted(token);
     if (TokenBlacklisted) {
       throw new Error('Token is blacklisted');
     }
+
+    if (token === undefined) {
+      console.log('Token is undefined');
+      throw new Error('Token is undefined');
+    }
+
     const decoded = jwt.verify(token, secretKey);
     const decodedUser = decoded.user; // 사용자 ID 반환
     const userID = String(decodedUser.id);

@@ -7,9 +7,8 @@ const deleteMemo = async (username, time) => {
   const client = await MongoClient.connect(conn_str);
   try {
     const database = client.db('memo');
-    const userScrapCollection = database.collection('memos');
+    const userScrapCollection = database.collection(username);
     const deletionResult = await userScrapCollection.deleteOne({
-      username: username,
       time: time,
     });
     if (deletionResult.deletedCount === 0) {

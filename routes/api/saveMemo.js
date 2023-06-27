@@ -22,10 +22,9 @@ router.post('/', async (req, res) => {
     }
     const username = await extractUserName(userToken);
     const database = client.db('memo');
-    const memoCollection = database.collection('memos');
+    const memoCollection = database.collection(username);
     await memoCollection.createIndex({ memoTitle: 1 });
     const query = {
-      username: username,
       time: time,
     };
     const existingMemo = await memoCollection.findOne(query);
@@ -38,7 +37,6 @@ router.post('/', async (req, res) => {
     } else {
       // 도큐먼트가 존재하지 않는 경우 새로 생성
       const newMemo = {
-        username: username,
         time: time,
         memoTitle: memoTitle,
         memoContents: memoContents,

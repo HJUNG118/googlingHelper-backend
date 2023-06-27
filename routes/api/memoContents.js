@@ -22,9 +22,8 @@ router.post('/', async (req, res) => {
     }
     const username = await extractUserName(userToken);
     const database = client.db('memo');
-    const memoCollection = database.collection('memos');
+    const memoCollection = database.collection(username);
     const query = {
-      username: username,
       time: time,
     };
     const memo = await memoCollection.findOne(query);
@@ -41,7 +40,7 @@ router.post('/', async (req, res) => {
   } catch (error) {
     console.error(error);
     client.close();
-    res.status(500).json({ message: 'Internal Server Error' });
+    res.status(500).json({ message: error.message });
   }
 });
 

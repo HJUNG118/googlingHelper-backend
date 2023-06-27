@@ -27,7 +27,6 @@ router.post('/', async (req, res) => {
       time: time,
     };
     const memo = await memoCollection.findOne(query);
-    client.close();
     if (memo) {
       const responseData = {
         memoTitle: memo.memoTitle,
@@ -37,6 +36,7 @@ router.post('/', async (req, res) => {
     } else {
       res.status(404).json({ message: 'not found' });
     }
+    client.close();
   } catch (error) {
     console.error(error);
     client.close();

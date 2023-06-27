@@ -20,10 +20,9 @@ router.post('/', async (req, res) => {
     }
     const username = await extractUserName(userToken);
     const database = client.db('memo');
-    const memoCollection = database.collection('memos');
-    const query = { username: username };
+    const memoCollection = database.collection(username);
     const projection = { memoTitle: 1, time: 1 };
-    const result = await memoCollection.find(query, projection).toArray();
+    const result = await memoCollection.find({}, projection).toArray();
     const memoData = result.map((doc) => ({
       memoTitle: doc.memoTitle,
       time: doc.time,

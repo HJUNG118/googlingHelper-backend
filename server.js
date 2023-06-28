@@ -71,6 +71,9 @@ app.use('/api/saveMemo', saveMemoRouter);
 const allMemoTitleRouter = require('./routes/api/allMemoTitle');
 app.use('/api/allMemoTitle', allMemoTitleRouter);
 
+const searchDataRouter = require('./routes/api/searchData');
+app.use('/api/searchData', searchDataRouter);
+
 connectDB();
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

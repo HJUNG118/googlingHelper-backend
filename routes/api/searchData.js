@@ -9,7 +9,7 @@ app.use(cors());
 const { extractUserName } = require('../../function/extractUserName');
 const { searchData } = require('../../function/searchData');
 
-router.get('/', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const { search } = req.body;
     const authorizationHeader = req.headers.authorization;

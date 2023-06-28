@@ -3,7 +3,7 @@ const router = express.Router();
 require("dotenv").config();
 
 const { extractUserName } = require("../../function/extractUserName");
-const { deleteUserScrap } = require("../../function/deleteUserScrap");
+const { deleteTitle } = require("../../function/deleteTitle");
 
 router.delete("/", async (req, res) => {
   const { url, title, date } = req.body;
@@ -14,7 +14,7 @@ router.delete("/", async (req, res) => {
       userToken = authorizationHeader.substring(7); // "Bearer " 부분을 제외한 토큰 값 추출
     }
     const username = await extractUserName(userToken);
-    const message = await deleteUserScrap(username, url, title, date, res);
+    const message = await deleteTitle(username, url, title, date, res);
     res.status(200).json(message);
   } catch (error) {
     console.error(error);

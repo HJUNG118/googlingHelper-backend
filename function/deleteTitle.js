@@ -3,7 +3,7 @@ const { MongoClient } = require('mongodb');
 const conn_str = process.env.mongoURI;
 
 // 스크랩 하나 삭제
-const deleteUserScrap = async (username, url, title, date, res) => {
+const deleteTitle = async (username, url, title, date, res) => {
   try {
     const client = await MongoClient.connect(conn_str);
     const database = client.db('scrapData');
@@ -33,4 +33,4 @@ const deleteUserScrap = async (username, url, title, date, res) => {
   }
 };
 
-module.exports = { deleteUserScrap };
+module.exports = { deleteTitle };

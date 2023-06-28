@@ -29,8 +29,8 @@ app.use('/api/login', loginRouter);
 const logoutRouter = require('./routes/api/logout');
 app.use('/api/logout', logoutRouter);
 
-const deleteUserScrapRouter = require('./routes/api/deleteUserScrap');
-app.use('/api/deleteUserScrap', deleteUserScrapRouter);
+const deleteTitleRouter = require('./routes/api/deleteTitle');
+app.use('/api/deleteTitle', deleteTitleRouter);
 
 const deleteKeyWordRouter = require('./routes/api/deleteKeyWord');
 app.use('/api/deleteKeyWord', deleteKeyWordRouter);

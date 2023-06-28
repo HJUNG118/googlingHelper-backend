@@ -17,7 +17,7 @@ router.delete('/', async (req, res) => {
     const message = await deleteMemo(username, time);
     res.status(200).json(message);
   } catch (error) {
-    res.status(500).json(message);
+    res.status(500).json({ message: error.message });
   }
 });
 

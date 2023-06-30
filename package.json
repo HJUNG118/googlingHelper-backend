@@ -40,5 +40,8 @@
     "url": "https://github.com/SWJungle-tenten/backend/issues"
   },
   "homepage": "https://github.com/SWJungle-tenten/backend#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "artillery": "^2.0.0-34"
+  }
 }

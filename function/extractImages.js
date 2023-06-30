@@ -12,6 +12,7 @@ const extractImages = async (username) => {
     const scrapCollection = database.collection(username);
 
     // Find all documents and include only the 'img' field
+    await scrapCollection.createIndex({ img: 1 });
     const documents = await scrapCollection.find({}, { projection: { img: 1 } }).toArray();
 
     // Extract 'img' field from each document

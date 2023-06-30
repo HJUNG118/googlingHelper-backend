@@ -14,6 +14,10 @@ app.get('/', (req, res) => {
   res.status(200).send('API Running');
 });
 
+app.get("/http-request", (req, res) => {
+  res.status(200).sendFile(__dirname + "/httpRequest.html");
+});
+
 const authRouter = require('./routes/api/auth');
 app.use('/api/auth', authRouter);
 

@@ -9,7 +9,7 @@ app.use(cors());
 const { extractUserName } = require('../../function/extractUserName');
 const { extractImages } = require('../../function/extractImages');
 
-router.post('/', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const authorizationHeader = req.headers.authorization;
     let userToken = null;

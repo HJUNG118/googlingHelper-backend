@@ -1,9 +1,10 @@
 const axios = require('axios');
+const fs = require('fs');
 require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 const app = express();
-const { S3Client } = require('@aws-sdk/client-s3');
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const multerS3 = require('multer-s3');
 const multer = require('multer');
 const path = require('path');

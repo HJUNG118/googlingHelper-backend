@@ -74,6 +74,9 @@ app.use('/api/allMemoTitle', allMemoTitleRouter);
 const searchDataRouter = require('./routes/api/searchData');
 app.use('/api/searchData', searchDataRouter);
 
+const imgCollectRouter = require('./routes/api/imgCollect');
+app.use('/api/imgCollect', imgCollectRouter);
+
 connectDB();
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

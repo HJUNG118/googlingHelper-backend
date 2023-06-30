@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const conn_str = process.env.mongoURI;
 
 const saveScrap = async (username, keyWord, url, date, time, title, texts, img) => {
@@ -9,13 +9,14 @@ const saveScrap = async (username, keyWord, url, date, time, title, texts, img) 
     session.startTransaction(); // 트랜잭션 시작
     const database = client.db('scrapData');
     const scrapCollection = database.collection(username);
-    const existingScrap = await scrapCollection.findOne({ title: title, keyWord: keyWord });
+    const existingScrap = await scrapCollection.findOne({ date: date, title: title });
     let updateResult;
     if (existingScrap) {
+      const existingScrapId = new ObjectId(existingScrap._id);
       if (texts && texts.length > 0) {
-        updateResult = await scrapCollection.updateOne({ _id: existingScrap._id }, { $push: { text: texts } });
+        updateResult = await scrapCollection.updateOne({ _id: existingScrapId }, { $push: { text: texts } });
       } else if (img && img.length > 0) {
-        updateResult = await scrapCollection.updateOne({ _id: existingScrap._id }, { $push: { img: img } });
+        updateResult = await scrapCollection.updateOne({ _id: existingScrapId }, { $push: { img: img } });
       } else {
         client.close();
         return 'duplicate';

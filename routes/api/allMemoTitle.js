@@ -1,6 +1,6 @@
 const express = require('express');
 require("dotenv").config();
-const { client } = require("../../config/mongodb");
+const { connectDB, client } = require("../../config/mongodb");
 const router = express.Router();
 const app = express();
 
@@ -26,11 +26,15 @@ router.post('/', async (req, res) => {
       memoTitle: doc.memoTitle,
       time: doc.time,
     }));
-    res.status(200).json({ memoData });
+    if (memoData.length === 0) {
+      res.status(404).json({ message: 'empty' });
+    } else {
+      res.status(200).json({ memoData });
+    }
   } catch (error) {
-    res.status(500).json({ message: 'error' });
+    res.status(500).json({ message: error.message });
   } finally {
-    client.close();
+    // client.close();
   }
 });
 

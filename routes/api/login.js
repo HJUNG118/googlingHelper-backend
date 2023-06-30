@@ -10,6 +10,7 @@ router.post("/", async (req, res) => {
   const password = req.headers.password;
 
   try {
+    await client.connect();
 
     const db = client.db("test");
 

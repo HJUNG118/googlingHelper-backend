@@ -4,6 +4,8 @@ const { client } = require("../config/mongodb");
 // 최신 날짜 순으로 키워드 정렬, 키워드에 해당하는 url은 시간 순으로 정렬
 const textCollect = async (username) => {
   try {
+    await client.connect();
+    
     const database = client.db("scrapData");
     const userScrapCollection = database.collection(username);
 

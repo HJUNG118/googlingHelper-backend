@@ -1,11 +1,13 @@
 require('dotenv').config();
-const { client } = require('../config/mongodb');
+const { connectDB, getDB } = require('../config/mongodb');
+
 
 // 최신 날짜 순으로 키워드 정렬, 키워드에 해당하는 url은 시간 순으로 정렬
 const checkStorage = async (username) => {
   try {
+    await connectDB('scrapData');    
 
-    const userScrapCollection = client.db('scrapData').collection(username);
+    const userScrapCollection = getDB('scrapData').collection(username);
     const cursor = userScrapCollection.aggregate([
       {
         $sort: {
@@ -77,9 +79,7 @@ const checkStorage = async (username) => {
     return result;
   } catch (error) {
     throw error;
-  } finally {
-    client.close();
-  }
+  } 
 };
 
 module.exports = { checkStorage };

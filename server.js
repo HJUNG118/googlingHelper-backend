@@ -1,11 +1,8 @@
 const express = require('express');
 const connectDB = require('./config/db');
-// var WebSocket = require('ws');
+
 const app = express();
 const PORT = 8080;
-// const wss = new WebSocket.Server({
-//   server: HTTPServer, // WebSocket서버에 연결할 HTTP서버를 지정한다.
-// });
 
 app.use(express.json());
 const cors = require('cors');
@@ -76,6 +73,9 @@ app.use('/api/searchData', searchDataRouter);
 
 const imgCollectRouter = require('./routes/api/imgCollect');
 app.use('/api/imgCollect', imgCollectRouter);
+
+const textCollectRouter = require('./routes/api/textCollect');
+app.use('/api/textCollect', textCollectRouter);
 
 connectDB();
 

@@ -1,6 +1,6 @@
 const express = require('express');
-const { MongoClient } = require('mongodb');
-const conn_str = process.env.mongoURI;
+require("dotenv").config();
+const { client } = require("../../config/mongodb");
 const router = express.Router();
 const app = express();
 
@@ -11,7 +11,6 @@ app.use(cors());
 const { extractUserName } = require('../../function/extractUserName');
 
 router.post('/', async (req, res) => {
-  const client = await MongoClient.connect(conn_str);
   try {
     const authorizationHeader = req.headers.authorization;
     let userToken = null;

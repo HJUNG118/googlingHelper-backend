@@ -1,12 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { MongoClient } = require("mongodb");
-const conn_str = process.env.mongoURI;
 const { ObjectId } = require("mongodb");
+require("dotenv").config();
+const { client } = require("../../config/mongodb");
 
 const checkEmail = async (email, res) => {
   try {
-    const client = await MongoClient.connect(conn_str);
     const database = client.db("test");
     const usersCollection = database.collection("users");
 

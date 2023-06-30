@@ -1,9 +1,7 @@
 require('dotenv').config();
-const { MongoClient, ObjectId } = require('mongodb');
-const conn_str = process.env.mongoURI;
+const { client } = require('../config/mongodb');
 
 const saveScrap = async (username, keyWord, url, date, time, title, texts, img) => {
-  const client = await MongoClient.connect(conn_str);
   try {
     const session = client.startSession(); // 세션 생성
     session.startTransaction(); // 트랜잭션 시작

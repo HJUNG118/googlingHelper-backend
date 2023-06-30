@@ -1,14 +1,13 @@
-const { MongoClient } = require('mongodb');
 const { ObjectId } = require('mongodb');
 const jwt = require('jsonwebtoken');
-const conn_str = process.env.mongoURI;
 const secretKey = process.env.jwtSecret;
+require('dotenv').config();
+const { client } = require('../config/mongodb');
 
 const { isTokenBlacklisted } = require('../middleware/tokenBlacklist');
 
 const extractUserName = async (token) => {
 
-  const client = await MongoClient.connect(conn_str);
   try {
     const TokenBlacklisted = isTokenBlacklisted(token);
     if (TokenBlacklisted) {

@@ -1,9 +1,7 @@
 require('dotenv').config();
-const { MongoClient } = require('mongodb');
-const conn_str = process.env.mongoURI;
+const { client } = require('../config/mongodb');
 
 const extractImages = async (username) => {
-  const client = await MongoClient.connect(conn_str);
   let images;
   try {
     const database = client.db('scrapData');

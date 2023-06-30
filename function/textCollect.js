@@ -1,12 +1,10 @@
-require('dotenv').config();
-const { MongoClient } = require('mongodb');
-const conn_str = process.env.mongoURI;
+require("dotenv").config();
+const { client } = require("../config/mongodb");
 
 // 최신 날짜 순으로 키워드 정렬, 키워드에 해당하는 url은 시간 순으로 정렬
 const textCollect = async (username) => {
-  const client = await MongoClient.connect(conn_str);
   try {
-    const database = client.db('scrapData');
+    const database = client.db("scrapData");
     const userScrapCollection = database.collection(username);
 
     // 코드 작성

@@ -1,12 +1,9 @@
 require('dotenv').config();
-const { MongoClient } = require('mongodb');
-const conn_str = process.env.mongoURI;
+const { client } = require('../config/mongodb');
 
 // 최신 날짜 순으로 키워드 정렬, 키워드에 해당하는 url은 시간 순으로 정렬
 const checkKeyword = async (username) => {
   try {
-    const client = await MongoClient.connect(conn_str);
-    console.log('Atlas에 연결 완료');
     const database = client.db('scrapData');
     const userScrapCollection = database.collection(username);
     const cursor = userScrapCollection.aggregate([

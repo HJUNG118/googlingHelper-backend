@@ -1,9 +1,7 @@
 require('dotenv').config();
-const { MongoClient } = require('mongodb');
-const conn_str = process.env.mongoURI;
+const { client } = require('../config/mongodb');
 
 const deleteKeyWord = async (username, keyWord) => {
-  const client = await MongoClient.connect(conn_str);
   try {
     const database = client.db('scrapData');
     const userScrapCollection = database.collection(username);

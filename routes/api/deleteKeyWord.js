@@ -1,10 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { MongoClient } = require("mongodb");
 require("dotenv").config();
-const conn_str = process.env.mongoURI;
-const jwt = require("jsonwebtoken");
-const { ObjectId } = require("mongodb");
+const { client } = require("../../config/mongodb");
 
 const { deleteKeyWord } = require("../../function/deleteKeyWord");
 const { extractUserName } = require("../../function/extractUserName");

@@ -1,6 +1,5 @@
 require('dotenv').config();
-const { MongoClient } = require('mongodb');
-const conn_str = process.env.mongoURI;
+const { client } = require("../../config/mongodb");
 const express = require('express');
 const router = express.Router();
 const app = express();
@@ -12,7 +11,6 @@ app.use(cors());
 const { extractUserName } = require('../../function/extractUserName');
 
 router.post('/', async (req, res) => {
-  const client = await MongoClient.connect(conn_str);
   try {
     const { memoTitle, memoContents, time } = req.body;
     const authorizationHeader = req.headers.authorization;

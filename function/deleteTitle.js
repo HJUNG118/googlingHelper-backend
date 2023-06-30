@@ -1,11 +1,9 @@
 require('dotenv').config();
-const { MongoClient } = require('mongodb');
-const conn_str = process.env.mongoURI;
+const { client } = require('../config/mongodb');
 
 // 스크랩 하나 삭제
 const deleteTitle = async (username, url, title, date, res) => {
   try {
-    const client = await MongoClient.connect(conn_str);
     const database = client.db('scrapData');
     const userScrapCollection = database.collection(username);
 

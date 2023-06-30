@@ -1,4 +1,3 @@
 {
-  "mongoURI": "mongodb+srv://sangunlee6:dIlI9Wk9cYV1Lz5V@cluster0.0fq3hzh.mongodb.net/?retryWrites=true&w=majority"
+  "mongoURI":"mongodb+srv://sangunlee6:dIlI9Wk9cYV1Lz5V@cluster0.0fq3hzh.mongodb.net/?retryWrites=true&w=majority"
 }
-

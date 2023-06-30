@@ -4,7 +4,7 @@ const {connectDB, client} = require('./config/mongodb');
 const app = express();
 const PORT = 8080;
 
-connectDB();
+
 
 app.use(express.json());
 const cors = require('cors');
@@ -82,5 +82,7 @@ app.use('/api/imgCollect', imgCollectRouter);
 
 const textCollectRouter = require('./routes/api/textCollect');
 app.use('/api/textCollect', textCollectRouter);
+
+connectDB();
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

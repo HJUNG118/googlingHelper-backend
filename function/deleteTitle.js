@@ -1,11 +1,11 @@
-require('dotenv').config();
-const { client } = require('../config/mongodb');
+require("dotenv").config();
+const { connectDB, getDB } = require("../config/mongodb");
 
 // 스크랩 하나 삭제
 const deleteTitle = async (username, url, title, date, res) => {
   try {
-    const database = client.db('scrapData');
-    const userScrapCollection = database.collection(username);
+    await connectDB("scrapData");
+    const userScrapCollection = getDB("scrapData").collection(username);
 
     // 데이터 삭제
     const deletionResult = await userScrapCollection.deleteOne({
@@ -16,7 +16,7 @@ const deleteTitle = async (username, url, title, date, res) => {
     });
 
     if (deletionResult.deletedCount === 0) {
-      return { message: 'error' };
+      return { message: "error" };
     }
 
     const count = await userScrapCollection.countDocuments();
@@ -24,10 +24,10 @@ const deleteTitle = async (username, url, title, date, res) => {
       await userScrapCollection.drop();
     }
 
-    return { message: 'success' };
+    return { message: "success" };
   } catch (error) {
     console.error(error);
-    return { message: 'error' };
+    return { message: "error" };
   }
 };
 

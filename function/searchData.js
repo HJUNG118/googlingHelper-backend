@@ -26,7 +26,6 @@ const searchData = async (username, search) => {
       const foundElements = doc.text.filter((element) => new RegExp(search, 'i').test(element));
       result = result.concat(foundElements);
     }
-    console.log(result);
 
     return result;
   } catch (error) {

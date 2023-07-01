@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { client } = require("../../config/mongodb");
+const { connectDB, getDB } = require("../../config/mongodb");
 const express = require('express');
 const router = express.Router();
 const app = express();
@@ -19,8 +19,9 @@ router.post('/', async (req, res) => {
       userToken = authorizationHeader.substring(7);
     }
     const username = await extractUserName(userToken);
-    const database = client.db('memo');
-    const memoCollection = database.collection(username);
+    await connectDB("memo");
+    const memoCollection = getDB("memo").collection(username);
+
     await memoCollection.createIndex({ memoTitle: 1 });
     const query = {
       time: time,
@@ -44,9 +45,7 @@ router.post('/', async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
-  } finally {
-    client.close();
-  }
+  } 
 });
 
 module.exports = router;

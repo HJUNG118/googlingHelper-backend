@@ -8,16 +8,7 @@ const saveScrap = async (username, keyWord, url, date, time, title, texts, img) 
     await connectDB('scrapData');    
     // const session = getDB('scrapData').startSession(); // 세션 생성
     // session.startTransaction(); // 트랜잭션 시작
-
-    // console.log(username);
-    // console.log(keyWord);
-    // console.log(url);
-    // console.log(date);
-    // console.log(time);
-    // console.log(title);
-    // console.log(texts);
-    // console.log(img);
-    
+        
     const scrapCollection = getDB('scrapData').collection(username);
     const existingScrap = await scrapCollection.findOne({ date: date, title: title });
     let updateResult;

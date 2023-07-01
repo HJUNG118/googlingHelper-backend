@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
 
     
     if (dataToSend.length === 0) {
-      res.status(200).json(username);
+      res.status(200).json([]);
     } else {
       res.status(200).json({ dataToSend, username });
     }

@@ -24,6 +24,3 @@ router.delete("/", async (req, res) => {
 });
 
 module.exports = router;
-
-// return : 삭제완료 에서 success
-// error : error

@@ -3,8 +3,8 @@
     "target": "http://localhost:8080",
     "phases": [
       {
-        "duration": 120,
-        "arrivalCount": 1000
+        "duration": 300,
+        "arrivalRate": 20
       }
     ],
     "beforeEach": "./config/mongodb.js",
@@ -18,30 +18,6 @@
   "scenarios": [
     {
       "flow": [
-        {
-          "post": {
-            "url": "/api/checkStorage"
-          }
-        },
-        {
-          "think":1500
-        },
-        {
-          "post": {
-            "url": "/api/checkStorage"
-          }
-        },
-        {
-          "think":1500
-        },
-        {
-          "post": {
-            "url": "/api/checkStorage"
-          }
-        },
-        {
-          "think":1500
-        },
         {
           "post": {
             "url": "/api/checkStorage"

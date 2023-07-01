@@ -1,13 +1,13 @@
 require("dotenv").config();
-const { client } = require("../config/mongodb");
+const { connectDB, getDB } = require("../config/mongodb");
 
 const searchData = async (username, search) => {
   try {
-    const session = client.startSession();
-    session.startTransaction();
+    // const session = client.startSession();
+    // session.startTransaction();
 
-    const database = client.db("scrapData");
-    const scrapCollection = database.collection(username);
+    await connectDB("scrapData");
+    const scrapCollection = getDB("scrapData").collection(username);
 
     // Check if the 'text' index already exists
     const indexes = await scrapCollection.indexes();
@@ -33,7 +33,6 @@ const searchData = async (username, search) => {
 
     return result;
   } catch (error) {
-    client.close();
     return Promise.reject(error);
   }
 };

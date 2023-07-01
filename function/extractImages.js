@@ -14,8 +14,6 @@ const extractImages = async (username) => {
     images = documents.flatMap((document) => document.img).reverse();
   } catch (error) {
     return Promise.reject(error);
-  } finally {
-    client.close();
   }
   return images;
 };

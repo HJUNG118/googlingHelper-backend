@@ -13,7 +13,6 @@ router.post('/', async (req, res) => {
     }
 
     const username = await extractUserName(userToken);
-    console.log(username);
     const dataToSend = await checkStorage(username);
 
     if (dataToSend.length === 0) {

@@ -54,6 +54,7 @@ router.post('/', upload.single('image'), async (req, res) => {
     const dateTime = await getDateAndTime();
     const username = await extractUserName(userToken);
     const imgUrl = req.file.location;
+
     // const resizeurl = imageUrl.replace(/\/original\//, '/resize/');
     const result = await processImageAsync(username, keyWord, url, dateTime.date, dateTime.time, title, imgUrl);
     res.status(200).json({ message: result });

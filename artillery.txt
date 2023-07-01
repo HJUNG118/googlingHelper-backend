@@ -1,0 +1,3 @@
+npx artillery report myReport.json
+
+npx artillery run -o myReport.json loadtest.json

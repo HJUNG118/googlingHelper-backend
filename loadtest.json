@@ -3,15 +3,15 @@
     "target": "http://localhost:8080",
     "phases": [
       {
-        "duration": 60,
-        "arrivalRate": 10
+        "duration": 300,
+        "arrivalRate": 20
       }
     ],
     "beforeEach": "./config/mongodb.js",
     "defaults": {
       "headers": {
         "User-Agent": "Artillery",
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQ5ZTk0NDFjZGI2NjFmOTE3MWQzYjk4In0sImlhdCI6MTY4ODE0MTUzMywiZXhwIjoxNjg4MTc3NTMzfQ.39L3nztRvQ36bfNvEK_UsD-uKZYM3vho8489KSasyNQ"
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQ5YzJlOGMyMWQ5ODRhMzJhY2VlZWFiIn0sImlhdCI6MTY4ODIwMzY1OCwiZXhwIjoxNjg4MjM5NjU4fQ.QVcphTt2xSgyKdeE6H0kz4aYIezJfjrmYtEYkywU8z0"
       }
     }
   },
@@ -20,10 +20,11 @@
       "flow": [
         {
           "post": {
-            "url": "/api/imgCollect"
+            "url": "/api/checkStorage"
           }
         }
       ]
     }
   ]
 }
+

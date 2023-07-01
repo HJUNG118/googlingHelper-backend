@@ -1,11 +1,11 @@
 require('dotenv').config();
-const { client } = require('../config/mongodb');
+const { getDB, connectDB } = require('../config/mongodb');
 
 const extractImages = async (username) => {
   let images;
   try {
-    const database = client.db('scrapData');
-    const scrapCollection = database.collection(username);
+    await connectDB('scrapData');
+    const scrapCollection = getDB('scrapData').collection(username);
 
     // Find all documents and include only the 'img' field
     const documents = await scrapCollection.find({}, { projection: { _id: 0, img: 1 } }).toArray();

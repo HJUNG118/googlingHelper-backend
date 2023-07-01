@@ -1,13 +1,11 @@
 require("dotenv").config();
-const { client } = require("../config/mongodb");
+const { connectDB, getDB } = require("../config/mongodb");
 
 // 최신 날짜 순으로 키워드 정렬, 키워드에 해당하는 url은 시간 순으로 정렬
 const textCollect = async (username) => {
   try {
-    await client.connect();
-    
-    const database = client.db("scrapData");
-    const userScrapCollection = database.collection(username);
+    await connectDB("scrapData");
+    const userScrapCollection = getDB("scrapData").collection(username);
 
     // 코드 작성
     const documents = await userScrapCollection.find({}).toArray();
@@ -32,8 +30,6 @@ const textCollect = async (username) => {
     return result;
   } catch (error) {
     throw error;
-  } finally {
-    client.close();
   }
 };
 

@@ -1,11 +1,11 @@
 require("dotenv").config();
-const { client } = require('../config/mongodb');
+const { connectDB, getDB } = require("../config/mongodb");
 
 // 스크랩 텍스트 삭제
 const deleteScrapText = async (username, url, title, date, text) => {
   try {
-    const database = client.db("scrapData");
-    const userScrapCollection = database.collection(username);
+    await connectDB('scrapData');
+    const userScrapCollection = getDB('scrapData').collection(username);
 
     const updateResult = await userScrapCollection.updateOne(
       {

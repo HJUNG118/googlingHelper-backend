@@ -8,6 +8,7 @@ app.use(express.json());
 const cors = require('cors');
 app.use(cors());
 
+const { connectDB, getDB } = require("../../config/mongodb");
 const { extractUserName } = require('../../function/extractUserName');
 
 router.post('/', async (req, res) => {
@@ -19,8 +20,8 @@ router.post('/', async (req, res) => {
       userToken = authorizationHeader.substring(7); // "Bearer " 부분을 제외한 토큰 값 추출
     }
     const username = await extractUserName(userToken);
-    const database = client.db('memo');
-    const memoCollection = database.collection(username);
+    await connectDB("memo");
+    const memoCollection = getDB("memo").collection(username);
     const query = {
       time: time,
     };
@@ -34,10 +35,8 @@ router.post('/', async (req, res) => {
     } else {
       res.status(404).json({ message: 'not found' });
     }
-    client.close();
   } catch (error) {
     console.error(error);
-    client.close();
     res.status(500).json({ message: error.message });
   }
 });

@@ -90,10 +90,8 @@ const checkKeyword = async (username) => {
       },
     ]);
     const result = await cursor.toArray();
-    client.close();
     return result;
   } catch (error) {
-    client.close();
     throw error;
   }
 };

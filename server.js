@@ -4,8 +4,6 @@ const {connectDB, client} = require('./config/mongodb');
 const app = express();
 const PORT = 8080;
 
-
-
 app.use(express.json());
 const cors = require('cors');
 app.use(cors());

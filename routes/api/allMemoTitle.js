@@ -26,7 +26,11 @@ router.post('/', async (req, res) => {
       memoTitle: doc.memoTitle,
       time: doc.time,
     }));
-    res.status(200).json({ memoData });
+    if (memoData.length === 0) {
+      res.status(404).json({ message: 'empty' });
+    } else {
+      res.status(200).json({ memoData });
+    }
   } catch (error) {
     res.status(500).json({ message: 'error' });
   }

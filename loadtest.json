@@ -11,7 +11,7 @@
     "defaults": {
       "headers": {
         "User-Agent": "Artillery",
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQ5YzJlOGMyMWQ5ODRhMzJhY2VlZWFiIn0sImlhdCI6MTY4ODIwMzY1OCwiZXhwIjoxNjg4MjM5NjU4fQ.QVcphTt2xSgyKdeE6H0kz4aYIezJfjrmYtEYkywU8z0"
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjRhMDRkNzVjZGI2NjFmOTE3MWQzY2I5In0sImlhdCI6MTY4ODI3ODcxNSwiZXhwIjoxNjg4MzE0NzE1fQ.x8GYVJWOkRtzopuGmQwq1Bw0aK9cBWHJwvsxGuTkzqw"
       }
     }
   },
@@ -21,6 +21,16 @@
         {
           "post": {
             "url": "/api/checkStorage"
+          }
+        },
+        {
+          "get": {
+            "url": "/api/imgCollect"
+          }
+        },
+        {
+          "post": {
+            "url": "/api/allMemoTitle"
           }
         }
       ]

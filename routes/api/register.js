@@ -17,12 +17,12 @@ router.post("/", async (req, res) => {
     
     const existingEmail = await getDB('test').collection("users").findOne({ email });
     if (existingEmail) {
-      return res.status(400).json({ errors: [{ msg: "User already exists" }] });
+      return res.status(400).json({ msg: "Email already exists" });
     }
 
     const existingName = await getDB('test').collection("users").findOne({ name });
     if (existingName) {
-      return res.status(400).json({ errors: [{ msg: "User already exists" }] });
+      return res.status(400).json({ msg: "User name already exists" });
     }
 
     const salt = await bcrypt.genSalt(10);

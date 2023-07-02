@@ -4,7 +4,7 @@
     "phases": [
       {
         "duration": 300,
-        "arrivalRate": 20
+        "arrivalRate": 10
       }
     ],
     "beforeEach": "./config/mongodb.js",

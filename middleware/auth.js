@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-require('dotenv').config();
+require("dotenv").config();
 
 const tokenBlacklist = require("./tokenBlacklist");
 
@@ -13,7 +13,9 @@ const authMiddleware = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.jwtSecret);
     if (tokenBlacklist.isTokenBlacklisted(token)) {
-      return res.status(401).json({ msg: "Token is blacklisted, Please login again" });
+      return res
+        .status(401)
+        .json({ msg: "Token is blacklisted, Please login again" });
     }
     req.user = decoded.user;
     next();
@@ -23,6 +25,3 @@ const authMiddleware = (req, res, next) => {
 };
 
 module.exports = authMiddleware;
-
-
-

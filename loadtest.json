@@ -4,14 +4,14 @@
     "phases": [
       {
         "duration": 300,
-        "arrivalRate": 10
+        "arrivalRate": 25
       }
     ],
     "beforeEach": "./config/mongodb.js",
     "defaults": {
       "headers": {
         "User-Agent": "Artillery",
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjRhMDRkNzVjZGI2NjFmOTE3MWQzY2I5In0sImlhdCI6MTY4ODI3ODcxNSwiZXhwIjoxNjg4MzE0NzE1fQ.x8GYVJWOkRtzopuGmQwq1Bw0aK9cBWHJwvsxGuTkzqw"
+        "Authorization": "Bearer {token}"
       }
     }
   },
@@ -26,11 +26,6 @@
         {
           "get": {
             "url": "/api/imgCollect"
-          }
-        },
-        {
-          "post": {
-            "url": "/api/allMemoTitle"
           }
         }
       ]

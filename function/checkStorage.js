@@ -1,13 +1,12 @@
-require('dotenv').config();
-const { connectDB, getDB } = require('../config/mongodb');
-
+require("dotenv").config();
+const { connectDB, getDB } = require("../config/mongodb");
 
 // 최신 날짜 순으로 키워드 정렬, 키워드에 해당하는 url은 시간 순으로 정렬
 const checkStorage = async (username) => {
   try {
-    await connectDB('scrapData');    
+    await connectDB("scrapData");
 
-    const userScrapCollection = getDB('scrapData').collection(username);
+    const userScrapCollection = getDB("scrapData").collection(username);
     const cursor = userScrapCollection.aggregate([
       {
         $sort: {
@@ -18,49 +17,49 @@ const checkStorage = async (username) => {
       {
         $group: {
           _id: {
-            date: '$date',
-            keyword: '$keyWord',
+            date: "$date",
+            keyword: "$keyWord",
           },
           title: {
-            $push: '$title',
+            $push: "$title",
           },
           url: {
-            $push: '$url',
+            $push: "$url",
           },
           time: {
-            $push: '$time',
+            $push: "$time",
           },
           texts: {
-            $push: '$text',
+            $push: "$text",
           },
           img: {
-            $push: '$img',
+            $push: "$img",
           },
         },
       },
       {
         $sort: {
-          '_id.date': -1,
-          'time.0': -1,
+          "_id.date": -1,
+          "time.0": -1,
         },
       },
       {
         $group: {
-          _id: '$_id.date',
+          _id: "$_id.date",
           keywords: {
             $push: {
-              keyword: '$_id.keyword',
-              titles: '$title',
-              urls: '$url',
-              times: '$time',
-              texts: '$texts',
-              img: '$img',
+              keyword: "$_id.keyword",
+              titles: "$title",
+              urls: "$url",
+              times: "$time",
+              texts: "$texts",
+              img: "$img",
             },
           },
         },
       },
       {
-        $unwind: '$keywords',
+        $unwind: "$keywords",
       },
       {
         $sort: {
@@ -69,7 +68,7 @@ const checkStorage = async (username) => {
       },
       {
         $project: {
-          date: '$_id',
+          date: "$_id",
           keywords: 1,
           _id: 0,
         },
@@ -79,7 +78,7 @@ const checkStorage = async (username) => {
     return result;
   } catch (error) {
     throw error;
-  } 
+  }
 };
 
 module.exports = { checkStorage };

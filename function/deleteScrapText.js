@@ -4,8 +4,8 @@ const { connectDB, getDB } = require("../config/mongodb");
 // 스크랩 텍스트 삭제
 const deleteScrapText = async (username, url, title, date, text) => {
   try {
-    await connectDB('scrapData');
-    const userScrapCollection = getDB('scrapData').collection(username);
+    await connectDB("scrapData");
+    const userScrapCollection = getDB("scrapData").collection(username);
 
     const updateResult = await userScrapCollection.updateOne(
       {

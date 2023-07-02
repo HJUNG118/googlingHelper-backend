@@ -1,12 +1,12 @@
-require('dotenv').config();
-const { connectDB, getDB } = require('../config/mongodb');
+require("dotenv").config();
+const { connectDB, getDB } = require("../config/mongodb");
 
 // 최신 날짜 순으로 키워드 정렬, 키워드에 해당하는 url은 시간 순으로 정렬
 const checkKeyword = async (username) => {
   try {
-    await connectDB('scrapData');
+    await connectDB("scrapData");
 
-    const userScrapCollection = getDB('scrapData').collection(username);
+    const userScrapCollection = getDB("scrapData").collection(username);
     const cursor = userScrapCollection.aggregate([
       {
         $sort: {
@@ -17,61 +17,61 @@ const checkKeyword = async (username) => {
       {
         $group: {
           _id: {
-            keyword: '$keyWord',
-            date: '$date',
+            keyword: "$keyWord",
+            date: "$date",
           },
           title: {
-            $push: '$title',
+            $push: "$title",
           },
           url: {
-            $push: '$url',
+            $push: "$url",
           },
           time: {
-            $push: '$time',
+            $push: "$time",
           },
           texts: {
-            $push: '$text',
+            $push: "$text",
           },
           img: {
-            $push: '$img',
+            $push: "$img",
           },
         },
       },
       {
         $group: {
-          _id: '$_id.keyword',
+          _id: "$_id.keyword",
           dates: {
             $push: {
-              date: '$_id.date',
-              titles: '$title',
-              urls: '$url',
-              times: '$time',
-              texts: '$texts',
-              img: '$img',
+              date: "$_id.date",
+              titles: "$title",
+              urls: "$url",
+              times: "$time",
+              texts: "$texts",
+              img: "$img",
             },
           },
         },
       },
       {
-        $unwind: '$dates',
+        $unwind: "$dates",
       },
       {
         $sort: {
           _id: 1,
-          'dates.date': -1,
+          "dates.date": -1,
         },
       },
       {
         $group: {
-          _id: '$_id',
+          _id: "$_id",
           dates: {
             $push: {
-              date: '$dates.date',
-              titles: '$dates.titles',
-              urls: '$dates.urls',
-              times: '$dates.times',
-              texts: '$dates.texts',
-              img: '$dates.img',
+              date: "$dates.date",
+              titles: "$dates.titles",
+              urls: "$dates.urls",
+              times: "$dates.times",
+              texts: "$dates.texts",
+              img: "$dates.img",
             },
           },
         },
@@ -83,7 +83,7 @@ const checkKeyword = async (username) => {
       },
       {
         $project: {
-          keyword: '$_id',
+          keyword: "$_id",
           dates: 1,
           _id: 0,
         },

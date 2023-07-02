@@ -2,20 +2,17 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
-require('dotenv').config();
-const { connectDB, getDB } = require('../../config/mongodb');
-
-
-
+require("dotenv").config();
+const { connectDB, getDB } = require("../../config/mongodb");
 
 router.post("/", async (req, res) => {
   const email = req.headers.email;
   const password = req.headers.password;
-  
-  try {
-    await connectDB('test');
 
-    const user = await getDB('test').collection("users").findOne({ email });
+  try {
+    await connectDB("test");
+
+    const user = await getDB("test").collection("users").findOne({ email });
 
     // 사용자가 존재하지 않는 경우
     if (!user) {

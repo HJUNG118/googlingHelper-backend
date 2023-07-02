@@ -1,30 +1,47 @@
-require('dotenv').config();
-const { ObjectId } = require('mongodb');
-const { connectDB, getDB } = require('../config/mongodb');
+require("dotenv").config();
+const { ObjectId } = require("mongodb");
+const { connectDB, getDB } = require("../config/mongodb");
 
-
-const saveScrap = async (username, keyWord, url, date, time, title, texts, img) => {
+const saveScrap = async (
+  username,
+  keyWord,
+  url,
+  date,
+  time,
+  title,
+  texts,
+  img
+) => {
   try {
-    await connectDB('scrapData');    
+    await connectDB("scrapData");
     // const session = getDB('scrapData').startSession(); // 세션 생성
     // session.startTransaction(); // 트랜잭션 시작
-        
-    const scrapCollection = getDB('scrapData').collection(username);
-    const existingScrap = await scrapCollection.findOne({ date: date, title: title });
+
+    const scrapCollection = getDB("scrapData").collection(username);
+    const existingScrap = await scrapCollection.findOne({
+      date: date,
+      title: title,
+    });
     let updateResult;
     if (existingScrap) {
       const existingScrapId = new ObjectId(existingScrap._id);
       if (texts && texts.length > 0) {
-        updateResult = await scrapCollection.updateOne({ _id: existingScrapId }, { $push: { text: texts } });
+        updateResult = await scrapCollection.updateOne(
+          { _id: existingScrapId },
+          { $push: { text: texts } }
+        );
       } else if (img && img.length > 0) {
-        updateResult = await scrapCollection.updateOne({ _id: existingScrapId }, { $push: { img: img } });
+        updateResult = await scrapCollection.updateOne(
+          { _id: existingScrapId },
+          { $push: { img: img } }
+        );
       } else {
-        return 'duplicate';
+        return "duplicate";
       }
       if (updateResult && updateResult.modifiedCount > 0) {
-        return 'update';
+        return "update";
       } else {
-        throw new Error('Failed to update');
+        throw new Error("Failed to update");
       }
     } else {
       const newScrap = {
@@ -40,9 +57,9 @@ const saveScrap = async (username, keyWord, url, date, time, title, texts, img) 
 
       const insertResult = await scrapCollection.insertOne(newScrap);
       if (insertResult.insertedId) {
-        return 'complete';
+        return "complete";
       } else {
-        throw new Error('Failed to insert');
+        throw new Error("Failed to insert");
       }
     }
   } catch (error) {
@@ -51,4 +68,3 @@ const saveScrap = async (username, keyWord, url, date, time, title, texts, img) 
 };
 
 module.exports = { saveScrap };
-

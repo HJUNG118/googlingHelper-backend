@@ -10,7 +10,7 @@ const searchData = async (username, search) => {
     const scrapCollectionExists = collections.length > 0;
 
     if (!scrapCollectionExists) {
-      return result; // 빈 배열 반환
+      return result; // Return an empty array
     }
 
     const scrapCollection = db.collection(username);
@@ -20,7 +20,11 @@ const searchData = async (username, search) => {
     if (!textIndexExists) {
       await scrapCollection.createIndex({ text: 'text' });
     }
-    const searchRegex = new RegExp(search, 'i'); // 대소문자 구분 없이 검색하는 정규표현식 생성
+
+    // Modified part: Build a regular expression to search for each word individually
+    const searchTerms = search.split(' ');
+    const searchRegexParts = searchTerms.map((term) => `(?=.*${term})`);
+    const searchRegex = new RegExp(searchRegexParts.join(''), 'i');
     const documents = await scrapCollection.find({ text: { $regex: searchRegex } }).toArray();
 
     for (const doc of documents) {

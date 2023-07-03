@@ -14,17 +14,17 @@ const searchData = async (username, search) => {
     }
 
     const scrapCollection = db.collection(username);
-
     const indexes = await scrapCollection.indexes();
     const textIndexExists = indexes.some((index) => index.name === 'text_1');
 
     if (!textIndexExists) {
       await scrapCollection.createIndex({ text: 'text' });
     }
-    const documents = await scrapCollection.find({ text: { $regex: search } }).toArray();
+    const searchRegex = new RegExp(search, 'i'); // 대소문자 구분 없이 검색하는 정규표현식 생성
+    const documents = await scrapCollection.find({ text: { $regex: searchRegex } }).toArray();
 
     for (const doc of documents) {
-      const foundElements = doc.text.filter((element) => new RegExp(search, 'i').test(element));
+      const foundElements = doc.text.filter((element) => searchRegex.test(element));
       result = result.concat(foundElements);
     }
 

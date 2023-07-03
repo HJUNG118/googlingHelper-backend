@@ -1,25 +1,25 @@
-const express = require("express");
-require("dotenv").config();
-const { connectDB, getDB } = require("../../config/mongodb");
+const express = require('express');
+require('dotenv').config();
+const { connectDB, getDB } = require('../../config/mongodb');
 const router = express.Router();
 const app = express();
 
 app.use(express.json());
-const cors = require("cors");
+const cors = require('cors');
 app.use(cors());
 
-const { extractUserName } = require("../../function/extractUserName");
+const { extractUserName } = require('../../function/extractUserName');
 
-router.post("/", async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const authorizationHeader = req.headers.authorization;
     let userToken = null;
-    if (authorizationHeader && authorizationHeader.startsWith("Bearer ")) {
+    if (authorizationHeader && authorizationHeader.startsWith('Bearer ')) {
       userToken = authorizationHeader.substring(7);
     }
     const username = await extractUserName(userToken);
-    await connectDB("memo");
-    const memoCollection = getDB("memo").collection(username);
+    await connectDB('memo');
+    const memoCollection = getDB('memo').collection(username);
     const projection = { memoTitle: 1, time: 1 };
     const result = await memoCollection.find({}, projection).toArray();
     const memoData = result.map((doc) => ({
@@ -27,12 +27,12 @@ router.post("/", async (req, res) => {
       time: doc.time,
     }));
     if (memoData.length === 0) {
-      res.status(404).json({ message: "empty" });
+      res.status(200).json({ message: 'empty' });
     } else {
       res.status(200).json({ memoData });
     }
   } catch (error) {
-    res.status(500).json({ message: "error" });
+    res.status(500).json({ message: 'error' });
   }
 });
 

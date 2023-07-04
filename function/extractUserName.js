@@ -9,7 +9,7 @@ const { isTokenBlacklisted } = require("../middleware/tokenBlacklist");
 
 const extractUserName = async (token) => {
   try {
-    await connectDB("test");
+    
 
     const TokenBlacklisted = isTokenBlacklisted(token);
     if (TokenBlacklisted) {
@@ -25,6 +25,8 @@ const extractUserName = async (token) => {
     if (userName) {
       return userName;
     }
+
+    await connectDB("test");
 
     const decoded = jwt.verify(token, secretKey);
     const decodedUser = decoded.user; // 사용자 ID 반환

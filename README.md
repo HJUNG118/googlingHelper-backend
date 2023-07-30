@@ -8,9 +8,7 @@
     <img src="https://github.com/SWJungle-tenten/.github/assets/126440955/c972001b-c330-45ee-8737-3f3a4222a73d">
   </a>
 
-  <p align="center">
-   <i>웹서핑을 편리하게</i>
-  </p>
+
   <p align="center">
     <b> 크롬익스텐션을 이용한 사이트 미리보기와 스크랩을 이용한 더 빠르고 편하게 내용을 정리할 수 있는 툴</b>
   </p>
